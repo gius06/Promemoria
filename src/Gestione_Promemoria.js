@@ -21,15 +21,14 @@ function salvaAttivitàSuFile(attività) {
 
 function cancellaAttività(vet) {
     let risultato = ricercaAttività(vet);
-    if(risultato===false)
-    {
+    if (risultato === false) {
         console.log("\nNESSUNA CORRISPONDENZA TROVATA\n");
         return;
     }
     else if (risultato.length === 1) {
         let conferma = 0;
-        do{
-            console.log("\n- VUOI ELIMINARE > ",risultato[0].nomeAttività," < ?");
+        do {
+            console.log("\n- VUOI ELIMINARE > ", risultato[0].nomeAttività, " < ?");
             console.log("1 : Sì");
             console.log("2 : No");
             conferma = parseInt(prompt("> "));
@@ -49,7 +48,7 @@ function cancellaAttività(vet) {
                     break;
                 }
             }
-        }while(conferma!==1&&conferma!==2);
+        } while (conferma !== 1 && conferma !== 2);
     } else {
         console.log("\n- ATTENZIONE LA RICERCA HA AVUTO PIÙ RISULTATI, SPECIFICARE MAGGIORMENTE\n")
         console.log(risultato);//
@@ -85,6 +84,47 @@ function ricercaAttività(vet) {
     }
     return risultati.length > 0 ? risultati : false;
 }
+
+function modificaAttività(vet) {
+    let risultato = ricercaAttività(vet);
+    if (risultato === false) {
+        console.log("\nNESSUNA CORRISPONDENZA TROVATA\n");
+        return;
+    } else if (risultato.length === 1) {
+        console.log("\nATTIVITÀ TROVATA: ");
+        console.log(risultato[0]);
+        let conferma = 0;
+        do {
+            console.log("\nDESIDERI MODIFICARE? ");
+            console.log("1: Sì");
+            console.log("2: Annulla");
+            conferma = parseInt(prompt("> "));
+            switch (conferma) {
+                case 1: {
+                    console.log("\nInserisci il nuovo nome:");
+                    const nuovoNome = prompt("> ");
+                    risultato[0].nomeAttività = nuovoNome;
+                    salvaAttivitàSuFile(vet);
+                    console.log("\nNome dell'attività modificato con successo!");
+                    break;
+                }
+                case 2: {
+                    console.log("\nModifica annullata.");
+                    break;
+                }
+                default: {
+                    console.log("\nScelta non valida.");
+                    break;
+                }
+            }
+        } while (conferma !== 1 && conferma !== 2 && conferma !== 3);
+    } else {
+        console.log("\n- ATTENZIONE LA RICERCA HA AVUTO PIÙ RISULTATI, SPECIFICARE MAGGIORMENTE\n")
+        console.log(risultato);
+        modificaAttività(vet);
+    }
+}
+
 function menuModifica() {
     let vet = leggiAttivitàDaFile();
     let scelta = 0;
@@ -93,9 +133,9 @@ function menuModifica() {
         console.log("░  ,--.   ,--. ,-----. ,------.  ,--.,------.,--. ,-----.  ,---.     ░");
         console.log("░  |   `.'   |'  .-.  '|  .-.  \\ |  ||  .---'|  |'  .--./ /  O  \\    ░");
         console.log("░  |  |'.'|  ||  | |  ||  |  \\  :|  ||  `--, |  ||  |    |  .-.  |   ░");
-        console.log("░  |  |   |  |'  '-'  '|  '--'  /|  ||  |`   |  |'  '--'\\|  | |  |   ░");      
+        console.log("░  |  |   |  |'  '-'  '|  '--'  /|  ||  |`   |  |'  '--'\\|  | |  |   ░");
         console.log("░  `--'   `--' `-----' `-------' '--''--'    '--' '-----''--' '--'   ░");
-        console.log("╚════════════════════════════════════════════════════════════════════╝");        
+        console.log("╚════════════════════════════════════════════════════════════════════╝");
         console.log("\n1: AGGIUNGI ATTIVITÀ");
         console.log("\n2: CANCELLA ATTIVITÀ");
         console.log("\n3: MODIFICA ATTIVITÀ");
@@ -116,7 +156,7 @@ function menuModifica() {
                 break;
             }
             case 3: {
-                // Implementa la funzione di modifica attività
+                modificaAttività(vet);
                 break;
             }
             case 4: {
@@ -127,8 +167,10 @@ function menuModifica() {
                 break;
             }
             default:
-                {console.log("\nVALORE NON VALIDO\n");
-                break;}
+                {
+                    console.log("\nVALORE NON VALIDO\n");
+                    break;
+                }
         }
     } while (scelta !== 5);
 }
@@ -140,10 +182,10 @@ function menuVisualizzazione() {
         console.log("░                                                                                   ░");
         console.log("░  ,--.  ,--.,--. ,---.  ,--. ,--.  ,---.  ,--.   ,--.,-------.,-------.  ,---.     ░");
         console.log("░  \\  '.'  / |  |'   .-' |  | |  | /  O  \\ |  |   |  |'--.   / '--.   /  /  O  \\    ░");
-        console.log("░   \\     /  |  |`.  `-. |  | |  ||  .-.  ||  |   |  |  /   /    /   /  |  .-.  |   ░");3
+        console.log("░   \\     /  |  |`.  `-. |  | |  ||  .-.  ||  |   |  |  /   /    /   /  |  .-.  |   ░"); 3
         console.log("░    \\   /   |  |.-'    |'  '-'  '|  | |  ||  '--.|  | /   `--. /   `--.|  | |  |   ░");
         console.log("░     `-'    '--''-----'  '-----' '--' '--''-----''--''-------''-------''--' '--'   ░");
-        console.log("░                                                                                   ░");        
+        console.log("░                                                                                   ░");
         console.log("╚═══════════════════════════════════════════════════════════════════════════════════╝")
         console.log("\n1: VISUALIZZA ELENCO ATTIVITÀ");
         console.log("\n2: RICERCA UN'ATTIVITÀ");
@@ -157,7 +199,12 @@ function menuVisualizzazione() {
             }
             case 2: {
                 let vet = leggiAttivitàDaFile();
-                console.log(ricercaAttività(vet));
+                attivitàTrovata = ricercaAttività(vet);
+                if (attivitàTrovata === false) {
+                    console.log("\nNESSUNA CORRISPONDENZA TROVATA\n")
+                } else {
+                    console.log(attivitàTrovata);
+                }
                 break;
             }
             case 3: {
@@ -173,7 +220,7 @@ function menuVisualizzazione() {
 function main() {
     let scelta = 0;
     do {
-        console.log("\n╔═════════════════════════════════════════════════════════════════════════════════════════════╗");            
+        console.log("\n╔═════════════════════════════════════════════════════════════════════════════════════════════╗");
         console.log("░                                                                                             ░");
         console.log("░  ,------. ,------.  ,-----. ,--.   ,--.,------.,--.   ,--. ,-----. ,------. ,--.  ,---.     ░");
         console.log("░  |  .--. '|  .--. ''  .-.  '|   `.'   ||  .---'|   `.'   |'  .-.  '|  .--. '|  | /  O  \\    ░");
