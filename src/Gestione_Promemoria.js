@@ -1,24 +1,52 @@
+/**
+ * Si tratta di un semplice programma di gestione delle attività che consente agli utenti di creare, eliminare, modificare,
+ * e cercare attività. Ogni attività può essere contrassegnata come completata. Le attività sono archiviate in
+ * un file JSON denominato "promemoria.json" nella directory "src". Il programma prevede
+ * un sistema di menu basato su testo per interagire con le attività.
+ *
+ * @fileoverview Sistema di gestione delle attività per creare, modificare, eliminare e cercare attività.
+ * @author Stefania Giuseppe, Di Maggio Federico, Di Stolfo Simone
+ */
 
 const prompt = require("prompt-sync")();
 const fs = require('fs');
 
+/**
+ * Classe che rappresenta una singola attività.
+ */
 class Attività {
+    /**
+     * Costruisce un'istanza di un'attività.
+     * @constructor
+     * @param {string} nomeAttività - Nome dell'attività.
+     */
     constructor(nomeAttività) {
         this.nomeAttività = nomeAttività;
         this.marcaturaAttività = false;
     }
 
+    /**
+     * Marca l'attività come completata.
+     */
     segnaMarcatura() {
         this.marcaturaAttività = true;
     }
 }
 
+/**
+ * Salva la lista delle attività nel file .json .
+ * @param {Attività[]} attività - Array delle attività che saranno salvate nel file.
+ */
 function salvaAttivitàSuFile(attività) {
     try {
         fs.writeFileSync("src/promemoria.json", JSON.stringify(attività));
     } catch (errore) { return [] }
 }
 
+/**
+ * Elimina le attività dalla lista basandosi su un ulteriore conferma dell'utente.
+ * @param {Attività[]} vet - Array delle attività.
+ */
 function cancellaAttività(vet) {
     let risultato = ricercaAttività(vet);
     if (risultato === false) {
@@ -56,6 +84,10 @@ function cancellaAttività(vet) {
     }
 }
 
+/**
+ * Legge le attività dal file.
+ * @returns {Attività[]} Array delle attività lette dal file.
+ */
 function leggiAttivitàDaFile() {
     try {
         const datiJSON = fs.readFileSync("src/promemoria.json", 'utf8');
@@ -64,6 +96,12 @@ function leggiAttivitàDaFile() {
         return [];
     }
 }
+
+/**
+ * Cerca le attività con una chiave.
+ * @param {Attività[]} vet - Array delle attività
+ * @returns {Attività[] | false} Array delle attività che corrispondo ai criteri di ricerca.
+ */
 function ricercaAttività(vet) {
     console.log();
     let paroleChiave = prompt("- INSERIRE ATTIVITÀ DA RICERCARE > ")
@@ -85,6 +123,10 @@ function ricercaAttività(vet) {
     return risultati.length > 0 ? risultati : false;
 }
 
+/**
+ * Modifica il nome di un'attività in base all'input dell'utente.
+ * @param {Attività[]} vet - AArray delle attività.
+ */
 function modificaAttività(vet) {
     let risultato = ricercaAttività(vet);
     if (risultato === false) {
@@ -125,6 +167,9 @@ function modificaAttività(vet) {
     }
 }
 
+/**
+ * Menu per la modifica delle attività, tra cui aggiunta, eliminazione, modifica e contrassegno delle attività.
+ */
 function menuModifica() {
     let vet = leggiAttivitàDaFile();
     let scelta = 0;
@@ -175,6 +220,9 @@ function menuModifica() {
     } while (scelta !== 5);
 }
 
+/**
+ * Menu per visualizzare le attività, inclusa la visualizzazione di tutte le attività e la ricerca di un'attività.
+ */
 function menuVisualizzazione() {
     let scelta = 0;
     do {
@@ -217,6 +265,9 @@ function menuVisualizzazione() {
     } while (scelta !== 3);
 }
 
+/**
+ * Il menu principale del programma. Consente la navigazione tra diverse funzionalità.
+ */
 function main() {
     let scelta = 0;
     do {
