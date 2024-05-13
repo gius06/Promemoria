@@ -57,8 +57,8 @@ function cancellaAttività(vet) {
         let conferma = 0;
         do {
             console.log("\n- VUOI ELIMINARE > ", risultato[0].nomeAttività, " < ?");
-            console.log("1 : Sì");
-            console.log("2 : No");
+            console.log("1 : SÌ");
+            console.log("2 : NO");
             conferma = parseInt(prompt("> "));
             switch (conferma) {
                 case 1: {
@@ -138,24 +138,24 @@ function modificaAttività(vet) {
         let conferma = 0;
         do {
             console.log("\nDESIDERI MODIFICARE? ");
-            console.log("1: Sì");
-            console.log("2: Annulla");
+            console.log("1: SÌ");
+            console.log("2: ANNULLA");
             conferma = parseInt(prompt("> "));
             switch (conferma) {
                 case 1: {
-                    console.log("\nInserisci il nuovo nome:");
+                    console.log("\nINSERISCI IL NUOVO NOME:");
                     const nuovoNome = prompt("> ");
                     risultato[0].nomeAttività = nuovoNome;
                     salvaAttivitàSuFile(vet);
-                    console.log("\nNome dell'attività modificato con successo!");
+                    console.log("\nNOME DELL'ATTIVITÀ MODIFICATO CON SUCCESSO!");
                     break;
                 }
                 case 2: {
-                    console.log("\nModifica annullata.");
+                    console.log("\nMODIFICA ANNULLATA.");
                     break;
                 }
                 default: {
-                    console.log("\nScelta non valida.");
+                    console.log("\nSCELTA NON VALIDA.");
                     break;
                 }
             }
@@ -190,7 +190,7 @@ function menuModifica() {
         switch (scelta) {
             case 1: {
                 console.log();
-                const nomeAttività = prompt("- INSERIRE NOME NUOVA ATTIVITÀ > ");
+                const nomeAttività = prompt("- INSERIRE NOME DELLA NUOVA ATTIVITÀ > ");
                 vet.push(new Attività(nomeAttività));
                 salvaAttivitàSuFile(vet);
                 break;
