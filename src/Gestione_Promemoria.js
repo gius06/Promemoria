@@ -24,10 +24,14 @@ class Attività {
         this.nomeAttività = nomeAttività;
         this.marcaturaAttività = false;
     }
+    /**
+     * Marca l'attività come completata.
+     */
+    segnaMarcatura(controllo) {
+        this.marcaturaAttività = controllo;
+    }
 }
-function segnaMarcatura(vet) {
-    vet.marcaturaAttività = true;
-}
+
 /**
  * Salva la lista delle attività nel file .json .
  * @param {Attività[]} attività - Array delle attività che saranno salvate nel file.
@@ -103,7 +107,7 @@ function ricercaAttività(vet) {
     paroleChiave = paroleChiave.toLowerCase();
     let risultati = [];
     for (let i = 0; i < vet.length; i++) {
-        let attivita = vet[i].nomeAttività.toLowerCase();
+        const attivita = vet[i].nomeAttività.toLowerCase();
         if (paroleChiave.length === 1) {
             if (attivita.startsWith(paroleChiave)) {
                 risultati.push(vet[i]);
@@ -180,12 +184,12 @@ function marcaturaAttività(vet) {
             conferma = parseInt(prompt("> "));
             switch (conferma) {
                 case 1: {
-                    if (risultato[0].marcaturaAttività === false) {
-                        segnaMarcatura(risultato[0]);
+                    if(risultato[0].marcaturaAttività===false){
+                        risultato[0].segnaMarcatura(true);
                         salvaAttivitàSuFile(vet);
                         console.log("\nATTIVITÀ SEGNATA COME SVOLTA!");
-                    } else {
-                        risultato[0].marcaturaAttività = false;
+                    }else{
+                        risultato[0].segnaMarcatura(false);
                         salvaAttivitàSuFile(vet);
                         console.log("\nATTIVITÀ SEGNATA COME NON SVOLTA!");
                     }
@@ -230,7 +234,7 @@ function menuModifica() {
         switch (scelta) {
             case 1: {
                 console.log();
-                let nomeAttività = prompt("- INSERIRE NOME DELLA NUOVA ATTIVITÀ > ");
+                const nomeAttività = prompt("- INSERIRE NOME DELLA NUOVA ATTIVITÀ > ");
                 vet.push(new Attività(nomeAttività));
                 salvaAttivitàSuFile(vet);
                 break;
@@ -263,19 +267,23 @@ function menuModifica() {
  * Visualizza elenco attività in ordine di marcatura.
  * @param {Attività[]} vet - Array delle attività.
  */
-function visualizzaAttività(vet) {
-    let c = 0;
+function visualizzaAttività(vet)
+{
+    let c=0;
     console.log();
-    for (let i = 0; i < vet.length; i++)
-        if (!vet[i].marcaturaAttività) {
+    for(let i=0;i<vet.length;i++)
+        if(!vet[i].marcaturaAttività)
+        {
             c++;
-            console.log("- ", c, ". ", vet[i].nomeAttività)
+            console.log("- ",c,". ",vet[i].nomeAttività)
         }
-
-    for (let k = 0; k < vet.length; k++) {
-        if (vet[k].marcaturaAttività) {
+    
+    for(let k=0;k<vet.length;k++)
+    {
+        if(vet[k].marcaturaAttività)
+        {
             c++;
-            console.log("- ", c, ". \x1b[9m", vet[k].nomeAttività, "\x1b[0m")
+            console.log("- ",c,". \x1b[9m",vet[k].nomeAttività,"\x1b[0m")
         }
     }
 }
@@ -309,7 +317,7 @@ function menuVisualizzazione() {
                 if (attivitàTrovata === false) {
                     console.log("\nNESSUNA CORRISPONDENZA TROVATA\n")
                 } else {
-                    visualizzaAttività(attivitàTrovata);
+                    console.log(attivitàTrovata);
                 }
                 break;
             }
