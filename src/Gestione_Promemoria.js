@@ -27,8 +27,8 @@ class Attività {
     /**
      * Marca l'attività come completata.
      */
-    segnaMarcatura(controllo) {
-        this.marcaturaAttività = controllo;
+    segnaMarcatura() {
+        this.marcaturaAttività = true;
     }
 }
 
@@ -37,9 +37,7 @@ class Attività {
  * @param {Attività[]} attività - Array delle attività che saranno salvate nel file.
  */
 function salvaAttivitàSuFile(attività) {
-    try {
         fs.writeFileSync("src/promemoria.json", JSON.stringify(attività));
-    } catch (errore) { return [] }
 }
 
 /**
@@ -49,13 +47,13 @@ function salvaAttivitàSuFile(attività) {
 function cancellaAttività(vet) {
     let risultato = ricercaAttività(vet);
     if (risultato === false) {
-        console.log("\nNESSUNA CORRISPONDENZA TROVATA\n");
+        console.log("\n- NESSUNA CORRISPONDENZA TROVATA\n");
         return;
     }
     else if (risultato.length === 1) {
         let conferma = 0;
         do {
-            console.log("\n- VUOI ELIMINARE > ", risultato[0].nomeAttività, " < ?");
+            console.log("\nVUOI ELIMINARE > ", risultato[0].nomeAttività, " < ?");
             console.log("1 : SÌ");
             console.log("2 : NO");
             conferma = parseInt(prompt("> "));
@@ -71,7 +69,7 @@ function cancellaAttività(vet) {
                     break;
                 }
                 default: {
-                    console.log("\nVALORE NON VALIDO\n");
+                    console.log("\n- VALORE NON VALIDO\n");
                     break;
                 }
             }
@@ -129,10 +127,10 @@ function ricercaAttività(vet) {
 function modificaAttività(vet) {
     let risultato = ricercaAttività(vet);
     if (risultato === false) {
-        console.log("\nNESSUNA CORRISPONDENZA TROVATA\n");
+        console.log("\n- NESSUNA CORRISPONDENZA TROVATA\n");
         return;
     } else if (risultato.length === 1) {
-        console.log("\nATTIVITÀ TROVATA: ");
+        console.log("\n- ATTIVITÀ TROVATA: ");
         visualizzaAttività(risultato);
         let conferma = 0;
         do {
@@ -142,24 +140,24 @@ function modificaAttività(vet) {
             conferma = parseInt(prompt("> "));
             switch (conferma) {
                 case 1: {
-                    console.log("\nINSERISCI IL NUOVO NOME");
+                    console.log("\n- INSERISCI IL NUOVO NOME");
                     risultato[0].nomeAttività = prompt("> ");
                     salvaAttivitàSuFile(vet);
-                    console.log("\nNOME DELL'ATTIVITÀ MODIFICATO CON SUCCESSO!");
+                    console.log("\n- NOME DELL'ATTIVITÀ MODIFICATO CON SUCCESSO!");
                     break;
                 }
                 case 2: {
-                    console.log("\nMODIFICA ANNULLATA.");
+                    console.log("\n- MODIFICA ANNULLATA.");
                     break;
                 }
                 default: {
-                    console.log("\nSCELTA NON VALIDA.");
+                    console.log("\n- SCELTA NON VALIDA.");
                     break;
                 }
             }
         } while (conferma !== 1 && conferma !== 2 && conferma !== 3);
     } else {
-        console.log("\n- ATTENZIONE LA RICERCA HA AVUTO PIÙ RISULTATI, SPECIFICARE MAGGIORMENTE\n")
+        console.log("\n- ATTENZIONE LA RICERCA HA AVUTO PIÙ RISULTATI, SPECIFICARE MAGGIORMENTE")
         visualizzaAttività(risultato);
         modificaAttività(vet);
     }
@@ -171,40 +169,40 @@ function modificaAttività(vet) {
 function marcaturaAttività(vet) {
     let risultato = ricercaAttività(vet);
     if (risultato === false) {
-        console.log("\nNESSUNA CORRISPONDENZA TROVATA\n");
+        console.log("\n- NESSUNA CORRISPONDENZA TROVATA\n");
         return;
     } else if (risultato.length === 1) {
-        console.log("\nATTIVITÀ TROVATA: ");
+        console.log("\n- ATTIVITÀ TROVATA: ");
         visualizzaAttività(risultato);
-        let conferma = 0;
-        do {
-            console.log("\nMODIFICARE MARCATURA? ");
-            console.log("1: SÌ");
-            console.log("2: ANNULLA");
-            conferma = parseInt(prompt("> "));
-            switch (conferma) {
-                case 1: {
-                    if(risultato[0].marcaturaAttività===false){
-                        risultato[0].segnaMarcatura(true);
-                        salvaAttivitàSuFile(vet);
-                        console.log("\nATTIVITÀ SEGNATA COME SVOLTA!");
-                    }else{
-                        risultato[0].segnaMarcatura(false);
-                        salvaAttivitàSuFile(vet);
-                        console.log("\nATTIVITÀ SEGNATA COME NON SVOLTA!");
+        if(risultato[0].marcaturaAttività===true){
+                console.log("\n- ERRORE, NON PUOI MARCARE UN'ATTIVITÀ GIÀ SVOLTA!");
+                return;
+        }
+        else{
+            let conferma = 0;
+            do {
+                console.log("\nSEGNARE COME COMPLETATA? ");
+                console.log("1: SÌ");
+                console.log("2: ANNULLA");
+                conferma = parseInt(prompt("> "));
+                switch (conferma) {
+                    case 1: {
+                            risultato[0].segnaMarcatura();                                
+                            console.log("\n- ATTIVITÀ SEGNATA COME SVOLTA!");
+                            break;
                     }
-                    break;
+                    case 2: {
+                        console.log("\n- MODIFICA MARCATURA ANNULLATA.");
+                        break;
+                    }
+                    default: {
+                        console.log("\n- SCELTA NON VALIDA.");
+                        break;
+                    }
                 }
-                case 2: {
-                    console.log("\nMODIFICA MARCATURA ANNULLATA.");
-                    break;
-                }
-                default: {
-                    console.log("\nSCELTA NON VALIDA.");
-                    break;
-                }
-            }
-        } while (conferma !== 1 && conferma !== 2 && conferma !== 3);
+            } while (conferma !== 1 && conferma !== 2 && conferma !== 3);
+            salvaAttivitàSuFile(vet);
+        }
     } else {
         console.log("\n- ATTENZIONE LA RICERCA HA AVUTO PIÙ RISULTATI, SPECIFICARE MAGGIORMENTE\n");
         visualizzaAttività(risultato);
@@ -257,7 +255,7 @@ function menuModifica() {
             }
             default:
                 {
-                    console.log("\nVALORE NON VALIDO\n");
+                    console.log("\n- VALORE NON VALIDO\n");
                     break;
                 }
         }
@@ -315,7 +313,7 @@ function menuVisualizzazione() {
             case 2: {
                 attivitàTrovata = ricercaAttività(leggiAttivitàDaFile());
                 if (attivitàTrovata === false) {
-                    console.log("\nNESSUNA CORRISPONDENZA TROVATA\n")
+                    console.log("\n- NESSUNA CORRISPONDENZA TROVATA\n")
                 } else {
                     console.log(attivitàTrovata);
                 }
@@ -325,7 +323,7 @@ function menuVisualizzazione() {
                 break;
             }
             default:
-                console.log("\nVALORE NON VALIDO\n");
+                console.log("\n- VALORE NON VALIDO\n");
                 break;
         }
     } while (scelta !== 3);
@@ -364,7 +362,7 @@ function main() {
                 break;
             }
             default:
-                console.log("\nVALORE NON VALIDO\n");
+                console.log("\n- VALORE NON VALIDO\n");
                 break;
         }
     } while (scelta !== 3);
