@@ -47,35 +47,55 @@ function salvaAttivitàSuFile(attività) {
 function cancellaAttività(vet) {
     let risultato = ricercaAttività(vet);
     if (risultato === false) {
-        console.log("\n- NESSUNA CORRISPONDENZA TROVATA\n");
+        console.log("\n                     ═════════════════════════════════════");
+        console.log("                     !!!NESSUNA CORRISPONDENZA TROVATA!!!");
+        console.log("                     ═════════════════════════════════════");
         return;
     }
     else if (risultato.length === 1) {
         let conferma = 0;
         do {
-            console.log("\nVUOI ELIMINARE > ", risultato[0].nomeAttività, " < ?");
-            console.log("1 : SÌ");
-            console.log("2 : NO");
-            conferma = parseInt(prompt("> "));
+            console.log("\n              ╔═════════════════════════════════════╗");
+            console.log("              ║    _____                  ____      ║");    
+            console.log("              ║   / ___/__ ____  _______ / / /__ _  ║");
+            console.log("              ║  / /__/ _  / _ \\/ __/ -_) / / _  /  ║");
+            console.log("              ║  \\___/\\___/_//_/\\__/\\__/_/_/\\___/   ║");
+            console.log("              ║                                     ║");
+            console.log("              ╚═════════════════════════════════════╝");
+            
+            console.log("\n              ┌─────────────────────────────────┐");
+            console.log("              │ VUOI ELIMINARE ──>", risultato[0].nomeAttività,"<── ?│");
+            console.log("              │ 1 : SÌ                          │");
+            console.log("              │ 2 : NO                          │");
+            console.log("              └─────────────────────────────────┘")
+            conferma = parseInt(prompt("              > " ));
             switch (conferma) {
                 case 1: {
                     vet = vet.filter(attività => attività.nomeAttività !== risultato[0].nomeAttività);
                     salvaAttivitàSuFile(vet);
-                    console.log("\n- ATTIVITÀ CANCELLATA CON SUCCESSO !");
+                    console.log("\n             ══════════════════════════════════════");
+                    console.log("             !!!ATTIVITÀ CANCELLATA CON SUCCESSO!!!");
+                    console.log("             ══════════════════════════════════════");
                     break;
                 }
                 case 2: {
-                    console.log("\n- OPERAZIONE ANNULLATA ! ");
+                    console.log("\n                  ══════════════════════════");
+                    console.log("                  !!!OPERAZIONE ANNULLATA!!!");
+                    console.log("                  ══════════════════════════");
                     break;
                 }
                 default: {
-                    console.log("\n- VALORE NON VALIDO\n");
+                    console.log("\n                     ═══════════════════════════");
+                    console.log("                     !!!VALORE NON VALIDO!!!");
+                    console.log("                     ═══════════════════════");
                     break;
                 }
             }
         } while (conferma !== 1 && conferma !== 2);
     } else {
-        console.log("\n- ATTENZIONE LA RICERCA HA AVUTO PIÙ RISULTATI, SPECIFICARE MAGGIORMENTE\n")
+        console.log("\n                     ══════════════════════════════════════════════════════════════════════════════");
+        console.log("                     !!!ATTENZIONE LA RICERCA HA AVUTO PIÙ RISULTATI, SPECIFICARE MAGGIORMENTE!!!");
+        console.log("                     ════════════════════════════════════════════════════════════════════════════");
         visualizzaAttività(risultato);
         cancellaAttività(vet);
     }
@@ -101,7 +121,7 @@ function leggiAttivitàDaFile() {
  */
 function ricercaAttività(vet) {
     console.log();
-    let paroleChiave = prompt("- INSERIRE ATTIVITÀ DA RICERCARE > ")
+    let paroleChiave = prompt("                     INSERIRE ATTIVITÀ DA RICERCARE > ")
     paroleChiave = paroleChiave.toLowerCase();
     let risultati = [];
     for (let i = 0; i < vet.length; i++) {
@@ -127,37 +147,60 @@ function ricercaAttività(vet) {
 function modificaAttività(vet) {
     let risultato = ricercaAttività(vet);
     if (risultato === false) {
-        console.log("\n- NESSUNA CORRISPONDENZA TROVATA\n");
+        console.log("\n                     ════════════════════════════════════");
+        console.log("                     !!!NESSUNA CORRISPONDENZA TROVATA!!!");
+        console.log("                     ════════════════════════════════════");
         return;
     } else if (risultato.length === 1) {
-        console.log("\n- ATTIVITÀ TROVATA: ");
+        console.log("\n                     ATTIVITÀ TROVATA: ");
         visualizzaAttività(risultato);
         let conferma = 0;
         do {
-            console.log("\nDESIDERI MODIFICARE? ");
-            console.log("1: SÌ");
-            console.log("2: ANNULLA");
-            conferma = parseInt(prompt("> "));
+            console.log("\n       ╔═════════════════════════════════════════════════════╗");
+            console.log("       ║       __  _______  ____  _______________________    ║");      
+            console.log("       ║      /  |/  / __ \\/ __ \\/  _/ ____/  _/ ____/   |   ║");     
+            console.log("       ║     / /|_/ / / / / / / // // /_   / // /   / /| |   ║");      
+            console.log("       ║    / /  / / /_/ / /_/ // // __/ _/ // /___/ ___ |   ║");      
+            console.log("       ║   /_/  /_/\\____/_____/___/_/   /___/\\____/_/  |_|   ║");
+            console.log("       ║                                                     ║")
+            console.log("       ╚═════════════════════════════════════════════════════╝");
+            console.log("\n                     ┌─────────────────────┐");
+            console.log("                     │DESIDERI MODIFICARE? │");
+            console.log("                     │1: SÌ                │");
+            console.log("                     │2: ANNULLA           │");
+            console.log("                     └─────────────────────┘\n");
+            conferma = parseInt(prompt("                     > "));
             switch (conferma) {
                 case 1: {
-                    console.log("\n- INSERISCI IL NUOVO NOME");
-                    risultato[0].nomeAttività = prompt("> ");
+                    console.log("\n                     ═══════════════════════");
+                    console.log("                     INSERISCI IL NUOVO NOME");
+                    console.log("                     ═══════════════════════");
+                    risultato[0].nomeAttività = prompt("                     > ");
                     salvaAttivitàSuFile(vet);
-                    console.log("\n- NOME DELL'ATTIVITÀ MODIFICATO CON SUCCESSO!");
+                    console.log("\n                     ═══════════════════════════════════════════");
+                    console.log("                     NOME DELL'ATTIVITÀ MODIFICATO CON SUCCESSO!");
+                    console.log("                     ═══════════════════════════════════════════");
                     break;
                 }
                 case 2: {
-                    console.log("\n- MODIFICA ANNULLATA.");
+                    console.log("\n                     ═══════════════════");
+                    console.log("                     MODIFICA ANNULLATA!");
+                    console.log("                     ═══════════════════");
                     break;
                 }
                 default: {
-                    console.log("\n- SCELTA NON VALIDA.");
+                    console.log("\n                     ═══════════════════════");
+                    console.log("                     !!!SCELTA NON VALIDA!!!");
+                    console.log("                     ═══════════════════════");
                     break;
                 }
             }
         } while (conferma !== 1 && conferma !== 2 && conferma !== 3);
     } else {
-        console.log("\n- ATTENZIONE LA RICERCA HA AVUTO PIÙ RISULTATI, SPECIFICARE MAGGIORMENTE")
+        console.log("\n                     ════════════════════════════════════════════════════════════════════════════");
+        console.log("                     !!!ATTENZIONE LA RICERCA HA AVUTO PIÙ RISULTATI, SPECIFICARE MAGGIORMENTE!!!")
+        console.log("                     ════════════════════════════════════════════════════════════════════════════");
+
         visualizzaAttività(risultato);
         modificaAttività(vet);
     }
@@ -169,34 +212,51 @@ function modificaAttività(vet) {
 function marcaturaAttività(vet) {
     let risultato = ricercaAttività(vet);
     if (risultato === false) {
-        console.log("\n- NESSUNA CORRISPONDENZA TROVATA\n");
+        console.log("\n                     ════════════════════════════════════");
+        console.log("                     !!!NESSUNA CORRISPONDENZA TROVATA!!!");
+        console.log("                     ════════════════════════════════════");
         return;
     } else if (risultato.length === 1) {
-        console.log("\n- ATTIVITÀ TROVATA: ");
+        console.log("\n                     ══════════════════");
+        console.log("                     ATTIVITÀ TROVATA: ");
+        console.log("                     ══════════════════");
         visualizzaAttività(risultato);
         if(risultato[0].marcaturaAttività===true){
-                console.log("\n- ERRORE, NON PUOI MARCARE UN'ATTIVITÀ GIÀ SVOLTA!");
+            console.log("\n                     ═════════════════════════════════════════════════════");
+            console.log("                     !!!ERRORE, NON PUOI MARCARE UN'ATTIVITÀ GIÀ SVOLTA!!!");
+            console.log("                     ═════════════════════════════════════════════════════");
                 return;
         }
         else{
             let conferma = 0;
             do {
-                console.log("\nSEGNARE COME COMPLETATA? ");
-                console.log("1: SÌ");
-                console.log("2: ANNULLA");
-                conferma = parseInt(prompt("> "));
+                console.log("\n       ╔═════════════════════════════════════════════════╗");
+                console.log("       ║     __  ___                  __                 ║");               
+                console.log("       ║    /  |/  /__ ____________ _/ /___ ___________  ║");
+                console.log("       ║   / /|_/ / _ `/ __/ __/ _ `/ __/ // / __/ _ `/  ║");
+                console.log("       ║  /_/  /_/\\_,_/_/  \\__/\\_,_/\\__/\\_,_/_/  \\_,_/   ║");
+                console.log("       ║                                                 ║");
+                console.log("       ╚═════════════════════════════════════════════════╝");
+                console.log("\n                     ┌──────────────────────────┐");
+                console.log("                     │SEGNARE COME COMPLETATA?  │");
+                console.log("                     │1: SÌ                     │");
+                console.log("                     │2: ANNULLA                │");
+                console.log("                     └──────────────────────────┘\n");
+                conferma = parseInt(prompt("                     > "));
                 switch (conferma) {
                     case 1: {
                             risultato[0].segnaMarcatura();                                
-                            console.log("\n- ATTIVITÀ SEGNATA COME SVOLTA!");
+                            console.log("\n                     ATTIVITÀ SEGNATA COME SVOLTA!");
                             break;
                     }
                     case 2: {
-                        console.log("\n- MODIFICA MARCATURA ANNULLATA.");
+                        console.log("\n                     MODIFICA MARCATURA ANNULLATA!");
                         break;
                     }
                     default: {
-                        console.log("\n- SCELTA NON VALIDA.");
+                        console.log("\n                     ═══════════════════════");
+                        console.log("                     !!!SCELTA NON VALIDA!!!");
+                        console.log("                     ═══════════════════════");
                         break;
                     }
                 }
@@ -204,7 +264,10 @@ function marcaturaAttività(vet) {
             salvaAttivitàSuFile(vet);
         }
     } else {
-        console.log("\n- ATTENZIONE LA RICERCA HA AVUTO PIÙ RISULTATI, SPECIFICARE MAGGIORMENTE\n");
+        console.log("\n                     ════════════════════════════════════════════════════════════════════════════");
+        console.log("                     !!!ATTENZIONE LA RICERCA HA AVUTO PIÙ RISULTATI, SPECIFICARE MAGGIORMENTE!!!");
+        console.log("                     ════════════════════════════════════════════════════════════════════════════");
+
         visualizzaAttività(risultato);
         marcaturaAttività(vet);
     }
@@ -216,23 +279,35 @@ function menuModifica() {
     let vet = leggiAttivitàDaFile();
     let scelta = 0;
     do {
-        console.log("\n╔════════════════════════════════════════════════════════════════════╗");
-        console.log("░  ,--.   ,--. ,-----. ,------.  ,--.,------.,--. ,-----.  ,---.     ░");
-        console.log("░  |   `.'   |'  .-.  '|  .-.  \\ |  ||  .---'|  |'  .--./ /  O  \\    ░");
-        console.log("░  |  |'.'|  ||  | |  ||  |  \\  :|  ||  `--, |  ||  |    |  .-.  |   ░");
-        console.log("░  |  |   |  |'  '-'  '|  '--'  /|  ||  |`   |  |'  '--'\\|  | |  |   ░");
-        console.log("░  `--'   `--' `-----' `-------' '--''--'    '--' '-----''--' '--'   ░");
-        console.log("╚════════════════════════════════════════════════════════════════════╝");
-        console.log("\n1: AGGIUNGI ATTIVITÀ");
-        console.log("\n2: CANCELLA ATTIVITÀ");
-        console.log("\n3: MODIFICA ATTIVITÀ");
-        console.log("\n4: MARCATURA ATTIVITÀ");
-        console.log("\n5: INDIETRO\n");
-        scelta = parseInt(prompt("> "));
+        console.log("\n       ╔══════════════════════════════════════════════════════╗");
+        console.log("       ║      _______________________________  _   ________   ║");
+        console.log("       ║     / ____/ ____/ ___/_  __/  _/ __ \\/ | / / ____/   ║");
+        console.log("       ║    / / __/ __/  \\__ \\ / /  / // / / /  |/ / __/      ║");
+        console.log("       ║   / /_/ / /___ ___/ // / _/ // /_/ / /|  / /___      ║");  
+        console.log("       ║   \\____/_____//____//_/ /___/\\____/_/ |_/_____/      ║");
+        console.log("       ║                                                      ║")
+        console.log("       ╚══════════════════════════════════════════════════════╝");
+        console.log("\n                     ┌────────────────────────┐");
+        console.log("                     │1: AGGIUNGI ATTIVITÀ    │");
+        console.log("                     │2: CANCELLA ATTIVITÀ    │");
+        console.log("                     │3: MODIFICA ATTIVITÀ    │");
+        console.log("                     │4: MARCATURA ATTIVITÀ   │");
+        console.log("                     │5: INDIETRO             │");
+        console.log("                     └────────────────────────┘\n");
+        scelta = parseInt(prompt("                     > "));
         switch (scelta) {
             case 1: {
                 console.log();
-                const nomeAttività = prompt("- INSERIRE NOME DELLA NUOVA ATTIVITÀ > ");
+                console.log("\n              ╔══════════════════════════════════════════╗");
+                console.log("              ║      ___            _                _   ║"); 
+                console.log("              ║     / _ |___ ____ _(_)_ _____  ___ _(_)  ║");
+                console.log("              ║    / __ / _ `/ _ `/ / // / _ \\/ _ `/ /   ║"); 
+                console.log("              ║   /_/ |_\\_, /\\_, /_/\\_,_/_//_/\\_, /_/    ║");  
+                console.log("              ║         \\__//\\__/            \\__/        ║");
+                console.log("              ║                                          ║");
+                console.log("              ╚══════════════════════════════════════════╝");
+
+                const nomeAttività = prompt("              INSERIRE NOME DELLA NUOVA ATTIVITÀ > ");
                 vet.push(new Attività(nomeAttività));
                 salvaAttivitàSuFile(vet);
                 break;
@@ -255,8 +330,10 @@ function menuModifica() {
             }
             default:
                 {
-                    console.log("\n- VALORE NON VALIDO\n");
-                    break;
+                console.log("\n                     ═══════════════════════");
+                console.log("                     !!!VALORE NON VALIDO!!!");
+                console.log("                     ═══════════════════════");
+                break;
                 }
         }
     } while (scelta !== 5);
@@ -268,7 +345,6 @@ function menuModifica() {
 function visualizzaAttività(vet)
 {
     let c=0;
-    console.log();
     for(let i=0;i<vet.length;i++)
         if(!vet[i].marcaturaAttività)
         {
@@ -292,28 +368,46 @@ function visualizzaAttività(vet)
 function menuVisualizzazione() {
     let scelta = 0;
     do {
-        console.log("\n╔═══════════════════════════════════════════════════════════════════════════════════╗");
-        console.log("░                                                                                   ░");
-        console.log("░  ,--.  ,--.,--. ,---.  ,--. ,--.  ,---.  ,--.   ,--.,-------.,-------.  ,---.     ░");
-        console.log("░  \\  '.'  / |  |'   .-' |  | |  | /  O  \\ |  |   |  |'--.   / '--.   /  /  O  \\    ░");
-        console.log("░   \\     /  |  |`.  `-. |  | |  ||  .-.  ||  |   |  |  /   /    /   /  |  .-.  |   ░"); 3
-        console.log("░    \\   /   |  |.-'    |'  '-'  '|  | |  ||  '--.|  | /   `--. /   `--.|  | |  |   ░");
-        console.log("░     `-'    '--''-----'  '-----' '--' '--''-----''--''-------''-------''--' '--'   ░");
-        console.log("░                                                                                   ░");
-        console.log("╚═══════════════════════════════════════════════════════════════════════════════════╝")
-        console.log("\n1: VISUALIZZA ELENCO ATTIVITÀ");
-        console.log("\n2: RICERCA UN'ATTIVITÀ");
-        console.log("\n3: INDIETRO\n");
-        scelta = parseInt(prompt("> "));
+        console.log("\n       ╔════════════════════════════════════════════════════════════════╗");
+        console.log("       ║    _    ___________ __  _____    __    ______________   ___    ║");
+        console.log("       ║   | |  / /  _/ ___// / / /   |  / /   /  _/__  /__  /  /   |   ║");
+        console.log("       ║   | | / // / \\__ \\/ / / / /| | / /    / /   / /  / /  / /| |   ║");
+        console.log("       ║   | |/ // / ___/ / /_/ / ___ |/ /____/ /   / /__/ /__/ ___ |   ║");
+        console.log("       ║   |___/___//____/\\____/_/  |_/_____/___/  /____/____/_/  |_|   ║");
+        console.log("       ║                                                                ║");
+        console.log("       ╚════════════════════════════════════════════════════════════════╝");
+        console.log();
+        console.log("\n                            ┌──────────────────────────────┐");
+        console.log("                            │1: VISUALIZZA ELENCO ATTIVITÀ │");
+        console.log("                            │2: RICERCA UN'ATTIVITÀ        │");
+        console.log("                            │3: INDIETRO                   │");
+        console.log("                            └──────────────────────────────┘\n");
+        scelta = parseInt(prompt("                            > "));
         switch (scelta) {
             case 1: {
+                console.log("              ╔═══════════════════════════════╗");
+                console.log("              ║     ______                    ║");               
+                console.log("              ║    / __/ /__ ___  _______     ║"); 
+                console.log("              ║   / _// / -_) _ \\/ __/ _ \\    ║");
+                console.log("              ║  /___/_/\\__/_//_/\\__/\\___/    ║");
+                console.log("              ║                               ║");
+                console.log("              ╚═══════════════════════════════╝");
                 visualizzaAttività(leggiAttivitàDaFile());
                 break;
             }
             case 2: {
+                console.log("                     ╔═══════════════════════════════════╗");
+                console.log("                     ║     ___  _                        ║");                    
+                console.log("                     ║    / _ \\(_)______ ___________ _   ║");
+                console.log("                     ║   / , _/ / __/ -_) __/ __/ _ `/   ║");
+                console.log("                     ║  /_/|_/_/\\__/\\__/_/  \\__/\\_,_/    ║");
+                console.log("                     ║                                   ║")
+                console.log("                     ╚═══════════════════════════════════╝");
                 attivitàTrovata = ricercaAttività(leggiAttivitàDaFile());
                 if (attivitàTrovata === false) {
-                    console.log("\n- NESSUNA CORRISPONDENZA TROVATA\n")
+                    console.log("\n                     ════════════════════════════════════");
+                    console.log("                     !!!NESSUNA CORRISPONDENZA TROVATA!!!");
+                    console.log("                     ════════════════════════════════════");
                 } else {
                     console.log(attivitàTrovata);
                 }
@@ -323,7 +417,9 @@ function menuVisualizzazione() {
                 break;
             }
             default:
-                console.log("\n- VALORE NON VALIDO\n");
+                console.log("\n                     ═══════════════════════");
+                console.log("                     !!!VALORE NON VALIDO!!!");
+                console.log("                     ═══════════════════════");
                 break;
         }
     } while (scelta !== 3);
@@ -335,20 +431,21 @@ function menuVisualizzazione() {
 function main() {
     let scelta = 0;
     do {
-        console.log("\n╔═════════════════════════════════════════════════════════════════════════════════════════════╗");
-        console.log("░                                                                                             ░");
-        console.log("░  ,------. ,------.  ,-----. ,--.   ,--.,------.,--.   ,--. ,-----. ,------. ,--.  ,---.     ░");
-        console.log("░  |  .--. '|  .--. ''  .-.  '|   `.'   ||  .---'|   `.'   |'  .-.  '|  .--. '|  | /  O  \\    ░");
-        console.log("░  |  '--' ||  '--'.'|  | |  ||  |'.'|  ||  `--, |  |'.'|  ||  | |  ||  '--'.'|  ||  .-.  |   ░");
-        console.log("░  |  | --' |  |\\  \\ '  '-'  '|  |   |  ||  `---.|  |   |  |'  '-'  '|  |\\  \\ |  ||  | |  |   ░");
-        console.log("░  `--'     `--' '--' `-----' `--'   ---''------'`--'   `--' `-----' '--' '--''--'`--' `--'   ░");
-        console.log("░                                                                                             ░");
-        console.log("╚═════════════════════════════════════════════════════════════════════════════════════════════╝");
-        console.log("\nSCEGLI COSA FARE:");
-        console.log("\n1: GESTISCI ATTIVITÀ");
-        console.log("\n2: VISUALIZZA ATTIVITÀ");
-        console.log("\n3: ESCI\n");
-        scelta = parseInt(prompt("> "));
+        console.log("\n       ╔══════════════════════════════════════════════════════════════════════╗");
+        console.log("       ║       ____  ____  ____  __  ___ _______  ___ ___  ____  ____ ___     ║");
+        console.log("       ║      / __ \\/ __ \\/ __ \\/  |/  / ____/  |/  / __ \\/ __ \\/  _/   |     ║");
+        console.log("       ║     / /_/ / /_/ / / / / /|_/ / __/ / /|_/ / / / / /_/ // // /| |     ║");
+        console.log("       ║    / ____/ _, _/ /_/ / /  / / /___/ /  / / /_/ / _, _// // ___ |     ║");
+        console.log("       ║   /_/   /_/ |_|\\____/_/  /_/_____/_/  /_/\\____/_/ |_/___/_/  |_|     ║");
+        console.log("       ║                                                                      ║");
+        console.log("       ╚══════════════════════════════════════════════════════════════════════╝");
+        console.log("\n                             ┌─────────────────────────┐")
+        console.log("                             │SCEGLI COSA FARE:        │");
+        console.log("                             │1: GESTISCI ATTIVITÀ     │");
+        console.log("                             │2: VISUALIZZA ATTIVITÀ   │");
+        console.log("                             │3: ESCI                  │");
+        console.log("                             └─────────────────────────┘\n");
+        scelta = parseInt(prompt("                            > "));
         switch (scelta) {
             case 1: {
                 menuModifica();
@@ -362,7 +459,9 @@ function main() {
                 break;
             }
             default:
-                console.log("\n- VALORE NON VALIDO\n");
+                console.log("\n                     ═══════════════════════");
+                console.log("                     !!!VALORE NON VALIDO!!!");
+                console.log("                     ═══════════════════════");
                 break;
         }
     } while (scelta !== 3);
