@@ -1,32 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>JSDoc: Source: Gestione_Promemoria.js</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
-</head>
-
-<body>
-
-<div id="main">
-
-    <h1 class="page-title">Source: Gestione_Promemoria.js</h1>
-
-    
-
-
-
-    
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
+/**
  * @fileoverview Sistema di gestione delle attività per creare, modificare, eliminare e cercare attività.
  * Questo è un semplice programma di gestione delle attività che consente agli utenti di creare, eliminare, modificare e cercare attività.
  * Ogni attività può essere contrassegnata come completata. Le attività sono archiviate in un file JSON denominato "promemoria.json" nella directory "src".
@@ -67,7 +39,7 @@ class Attività {
  * @description Questa funzione prende un array di oggetti attività e lo converte in una stringa JSON.
  * Successivamente, scrive questa stringa in un file chiamato "promemoria.json" nella cartella "src".
  * Se il file non esiste, viene creato. Se esiste già, viene sovrascritto.
- * @param {Array&lt;Attività>} attività - L'array di oggetti Attività da salvare.
+ * @param {Array<Attività>} attività - L'array di oggetti Attività da salvare.
  */
 function salvaAttivitàSuFile(attività) {
         fs.writeFileSync("src/promemoria.json", JSON.stringify(attività));
@@ -146,7 +118,7 @@ function cancellaAttività(vet) {
             }
             prompt("                  PREMERE INVIO PER CONTINUARE ...")
             console.clear();
-        } while (conferma !== 1 &amp;&amp; conferma !== 2);
+        } while (conferma !== 1 && conferma !== 2);
     } else if(risultato.length>1){ // Gestisce il caso in cui la ricerca ritorni più di un risultato
         console.log("\n════════════════════════════════════════════════════════════════════════════");
         console.log("!!!ATTENZIONE LA RICERCA HA AVUTO PIÙ RISULTATI, SPECIFICARE MAGGIORMENTE!!!");
@@ -253,7 +225,7 @@ function modificaAttività(vet) {
             }
             prompt("                  PREMERE INVIO PER CONTINUARE ...")
             console.clear();
-        } while (conferma !== 1 &amp;&amp; conferma !== 2);
+        } while (conferma !== 1 && conferma !== 2);
     } else if(risultato.length>1){ // Gestisce il caso in cui la ricerca ritorni più di un risultato
         console.log("\n════════════════════════════════════════════════════════════════════════════");
         console.log("!!!ATTENZIONE LA RICERCA HA AVUTO PIÙ RISULTATI, SPECIFICARE MAGGIORMENTE!!!")
@@ -326,7 +298,7 @@ function marcaturaAttività(vet) {
                 }
                 prompt("                   PREMERE INVIO PER CONTINUARE ...");
                 console.clear();
-            } while (conferma !== 1 &amp;&amp; conferma !== 2);
+            } while (conferma !== 1 && conferma !== 2);
             salvaAttivitàSuFile(vet); // Salva le modifiche al file
         }
     } else if(risultato.length>1){ // Gestisce il caso in cui la ricerca ritorni più di un risultato
@@ -406,20 +378,64 @@ function menuModifica() {
 function visualizzaAttività(vet)
 {
     let c=0;
-    for(let i=0;i&lt;vet.length;i++)
+    for(let i=0;i<vet.length;i++)
         if(!vet[i].marcaturaAttività)
         {
             c++;
             console.log("            - ",c,". ",vet[i].nomeAttività)
         }
     
-    for(let k=0;k&lt;vet.length;k++)
+    for(let k=0;k<vet.length;k++)
     {
         if(vet[k].marcaturaAttività)
         {
             c++;
             console.log("            - ",c,". \x1b[9m",vet[k].nomeAttività,"\x1b[0m")
         }
+    }
+}
+/**
+ * @description Stampa se ci sono attività nel file l'elenco delle attività richiamando 
+ * la funzione 'visualizzaAttività(vet)'
+ */
+function elencoAttività()
+{
+    console.clear();
+    console.log("              ╔═══════════════════════════════╗");
+    console.log("              ║     ______                    ║");               
+    console.log("              ║    / __/ /__ ___  _______     ║"); 
+    console.log("              ║   / _// / -_) _ \\/ __/ _ \\    ║");
+    console.log("              ║  /___/_/\\__/_//_/\\__/\\___/    ║");
+    console.log("              ║                               ║");
+    console.log("              ╚═══════════════════════════════╝\n");
+    let vet=leggiAttivitàDaFile() // Chiama la funzione per visualizzare le attività dal file
+    if(vet.length>0)
+        visualizzaAttività(vet);
+    else{
+        console.log("\n                    ══════════════════");
+        console.log("                    !!!ELENCO VUOTO!!!");
+        console.log("                    ══════════════════\n");
+    }
+    prompt("\n                PREMERE INVIO PER CONTINUARE ...");
+}
+/**
+ * @description Stampa decorativa della parola ricerca e ricerca attività nel file json
+ */
+function trovaAttività()
+{
+    console.clear();
+    console.log("              ╔═══════════════════════════════════╗");
+    console.log("              ║     ___  _                        ║");                    
+    console.log("              ║    / _ \\(_)______ ___________ _   ║");
+    console.log("              ║   / , _/ / __/ -_) __/ __/ _ `/   ║");
+    console.log("              ║  /_/|_/_/\\__/\\__/_/  \\__/\\_,_/    ║");
+    console.log("              ║                                   ║")
+    console.log("              ╚═══════════════════════════════════╝");
+    let risultato=ricercaAttività(leggiAttivitàDaFile()); // Chiama la funzione per cercare un'attività
+    console.log();
+    if(risultato.length>0){
+        visualizzaAttività(risultato);
+        prompt("\n                 PREMERE INVIO PER CONTINUARE ...")
     }
 }
 /**
@@ -449,33 +465,11 @@ function menuVisualizzazione() {
         scelta = parseInt(prompt("                         > "));
         switch (scelta) {
             case 1: {
-                console.clear();
-                console.log("              ╔═══════════════════════════════╗");
-                console.log("              ║     ______                    ║");               
-                console.log("              ║    / __/ /__ ___  _______     ║"); 
-                console.log("              ║   / _// / -_) _ \\/ __/ _ \\    ║");
-                console.log("              ║  /___/_/\\__/_//_/\\__/\\___/    ║");
-                console.log("              ║                               ║");
-                console.log("              ╚═══════════════════════════════╝");
-                visualizzaAttività(leggiAttivitàDaFile()); // Chiama la funzione per visualizzare le attività dal file
-                prompt("\n                PREMERE INVIO PER CONTINUARE ...");
+                elencoAttività();
                 break;
             }
             case 2: {
-                console.clear();
-                console.log("              ╔═══════════════════════════════════╗");
-                console.log("              ║     ___  _                        ║");                    
-                console.log("              ║    / _ \\(_)______ ___________ _   ║");
-                console.log("              ║   / , _/ / __/ -_) __/ __/ _ `/   ║");
-                console.log("              ║  /_/|_/_/\\__/\\__/_/  \\__/\\_,_/    ║");
-                console.log("              ║                                   ║")
-                console.log("              ╚═══════════════════════════════════╝");
-                let risultato=ricercaAttività(leggiAttivitàDaFile()); // Chiama la funzione per cercare un'attività
-                console.log();
-                if(risultato.length>0){
-                    visualizzaAttività(risultato);
-                    prompt("\n                 PREMERE INVIO PER CONTINUARE ...")
-                }
+                trovaAttività();
                 break;
             }
             case 3: {
@@ -537,26 +531,4 @@ function main() {
     } while (scelta !== 3);
     console.clear();
 }
-main();</code></pre>
-        </article>
-    </section>
-
-
-
-
-</div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Attivit%25C3%25A0.html">Attività</a></li></ul><h3>Global</h3><ul><li><a href="global.html#aggiungiAttivit%25C3%25A0">aggiungiAttività</a></li><li><a href="global.html#cancellaAttivit%25C3%25A0">cancellaAttività</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#leggiAttivit%25C3%25A0DaFile">leggiAttivitàDaFile</a></li><li><a href="global.html#main">main</a></li><li><a href="global.html#marcaturaAttivit%25C3%25A0">marcaturaAttività</a></li><li><a href="global.html#menuModifica">menuModifica</a></li><li><a href="global.html#menuVisualizzazione">menuVisualizzazione</a></li><li><a href="global.html#modificaAttivit%25C3%25A0">modificaAttività</a></li><li><a href="global.html#prompt">prompt</a></li><li><a href="global.html#ricercaAttivit%25C3%25A0">ricercaAttività</a></li><li><a href="global.html#salvaAttivit%25C3%25A0SuFile">salvaAttivitàSuFile</a></li><li><a href="global.html#visualizzaAttivit%25C3%25A0">visualizzaAttività</a></li></ul>
-</nav>
-
-<br class="clear">
-
-<footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed May 15 2024 18:11:01 GMT+0200 (Ora legale dell’Europa centrale)
-</footer>
-
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
-</body>
-</html>
+main();
