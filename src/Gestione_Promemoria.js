@@ -1,42 +1,56 @@
 /**
- * Si tratta di un semplice programma di gestione delle attività che consente agli utenti di creare, eliminare, modificare,
- * e cercare attività. Ogni attività può essere contrassegnata come completata. Le attività sono archiviate in
- * un file JSON denominato "promemoria.json" nella directory "src". Il programma prevede
- * un sistema di menu basato su testo per interagire con le attività.
- *
  * @fileoverview Sistema di gestione delle attività per creare, modificare, eliminare e cercare attività.
+ * Questo è un semplice programma di gestione delle attività che consente agli utenti di creare, eliminare, modificare e cercare attività.
+ * Ogni attività può essere contrassegnata come completata. Le attività sono archiviate in un file JSON denominato "promemoria.json" nella directory "src".
+ * Il programma prevede un sistema di menu basato su testo per interagire con le attività.
  * @author Stefania Giuseppe, Di Maggio Federico, Di Stolfo Simone
  */
-
-const prompt = require("prompt-sync")();
-const fs = require('fs');
-
 /**
- * Classe che rappresenta una singola attività.
+ * Modulo per richiedere input all'utente tramite la console.
+ */
+const prompt = require("prompt-sync")();
+/**
+ * Modulo del file system di Node.js per leggere e scrivere file.
+ */
+const fs = require('fs');
+/**
+ * Classe che rappresenta un'attività.
+ * @class
  */
 class Attività {
     /**
-     * Costruisce un'istanza di un'attività.
-     * @constructor
-     * @param {string} nomeAttività - Nome dell'attività.
+     * Crea una nuova istanza di Attività.
+     * @param {string} nomeAttività - Il nome dell'attività.
      */
     constructor(nomeAttività) {
+        /**
+         * Il nome dell'attività.
+         * @type {string}
+         */
         this.nomeAttività = nomeAttività;
+        /**
+         * Stato di marcatura dell'attività, indica se l'attività è stata completata, parte come non completata.
+         * @type {boolean}
+         */
         this.marcaturaAttività = false;
     }
 }
-
 /**
- * Salva la lista delle attività nel file .json .
- * @param {Attività[]} attività - Array delle attività che saranno salvate nel file.
+ * @description Questa funzione prende un array di oggetti attività e lo converte in una stringa JSON.
+ * Successivamente, scrive questa stringa in un file chiamato "promemoria.json" nella cartella "src".
+ * Se il file non esiste, viene creato. Se esiste già, viene sovrascritto.
+ * @param {Array<Attività>} attività - L'array di oggetti Attività da salvare.
  */
 function salvaAttivitàSuFile(attività) {
         fs.writeFileSync("src/promemoria.json", JSON.stringify(attività));
 }
-
+/**
+ * @description Questa funzione permette di aggiungere una nuova attività all'elenco.
+ * @param {Array} vet - Array di oggetti attività.
+ */
 function aggiungiAttività(vet)
 {
-    console.clear();
+    console.clear(); // Pulisce la console per una visualizzazione pulita
     console.log("              ╔══════════════════════════════════════════╗");
     console.log("              ║      ___            _                _   ║"); 
     console.log("              ║     / _ |___ ____ _(_)_ _____  ___ _(_)  ║");
@@ -46,17 +60,16 @@ function aggiungiAttività(vet)
     console.log("              ║                                          ║");
     console.log("              ╚══════════════════════════════════════════╝\n");
     const nomeAttività = prompt("              INSERIRE NOME DELLA NUOVA ATTIVITÀ > ");
-    vet.push(new Attività(nomeAttività));
-    salvaAttivitàSuFile(vet);
+    vet.push(new Attività(nomeAttività)); // Aggiunge la nuova attività all'array delle attività
+    salvaAttivitàSuFile(vet); // Salva l'array delle attività aggiornato su file
     console.log("\n                   ═══════════════════════════════");                     
     console.log("                   ATTIVITÀ AGGIUNTA CON SUCCESSO!");
     console.log("                   ═══════════════════════════════\n"); 
     prompt("                  PREMERE INVIO PER CONTINUARE ...");
-    console.clear();
 }
 /**
- * Elimina le attività dalla lista basandosi su un ulteriore conferma dell'utente.
- * @param {Attività[]} vet - Array delle attività.
+ * @description Questa funzione permette di cercare e cancellare un'attività dall'elenco.
+ * @param {Array} vet - Array di oggetti attività.
  */
 function cancellaAttività(vet) {
     console.clear();
@@ -67,14 +80,14 @@ function cancellaAttività(vet) {
     console.log("              ║  \\___/\\___/_//_/\\__/\\__/_/_/\\___/   ║");
     console.log("              ║                                     ║");
     console.log("              ╚═════════════════════════════════════╝");
-    let risultato = ricercaAttività(vet);
-    if (risultato.length === 1) {
+    let risultato = ricercaAttività(vet); // Cerca l'attività nell'array tramite la funzione ricercaAttività
+    if (risultato.length === 1) { // Controlla se è stata trovata esattamente una attività
         let conferma = 0;
         do {
             console.log("\n                         ══════════════════");
             console.log("                          ATTIVITÀ TROVATA");
             console.log("                         ══════════════════\n");
-            visualizzaAttività(risultato);
+            visualizzaAttività(risultato); // Visualizza l'attività trovata
             console.log("\n                 ┌─────────────────────────────────┐");
             console.log("                 │ VUOI ELIMINARE?                 │");
             console.log("                 │ 1 : SÌ                          │");
@@ -83,8 +96,8 @@ function cancellaAttività(vet) {
             conferma = parseInt(prompt("                 > " ));
             switch (conferma) {
                 case 1: {
-                    vet = vet.filter(attività => attività.nomeAttività !== risultato[0].nomeAttività);
-                    salvaAttivitàSuFile(vet);
+                    vet = vet.filter(attività => attività.nomeAttività !== risultato[0].nomeAttività); // Filtra l'attività dall'array e aggiorna il file
+                    salvaAttivitàSuFile(vet); // Funzione utilizzata per salvare l'array aggiornato nel file.
                     console.log("\n                ══════════════════════════════════════");
                     console.log("                !!!ATTIVITÀ CANCELLATA CON SUCCESSO!!!");
                     console.log("                ══════════════════════════════════════\n");
@@ -106,50 +119,46 @@ function cancellaAttività(vet) {
             prompt("                  PREMERE INVIO PER CONTINUARE ...")
             console.clear();
         } while (conferma !== 1 && conferma !== 2);
-    } else if(risultato.length>1){
+    } else if(risultato.length>1){ // Gestisce il caso in cui la ricerca ritorni più di un risultato
         console.log("\n════════════════════════════════════════════════════════════════════════════");
         console.log("!!!ATTENZIONE LA RICERCA HA AVUTO PIÙ RISULTATI, SPECIFICARE MAGGIORMENTE!!!");
         console.log("════════════════════════════════════════════════════════════════════════════");
-        visualizzaAttività(risultato);
+        visualizzaAttività(risultato); // Visualizza tutte le attività trovate
         prompt("\n                 PREMERE INVIO PER CONTINUARE ...")
-        cancellaAttività(vet);
+        cancellaAttività(vet); // Richiama la funzione per specificare meglio la ricerca
     }
 }
 /**
- * Legge le attività dal file.
- * @returns {Attività[]} Array delle attività lette dal file.
+ * @description Questa funzione legge un file JSON contenente attività e le restituisce come array di oggetti. 
+ * Se si verifica un errore durante la lettura del file, restituisce un array vuoto.
+ * @returns {Array} - Array di oggetti attività.
  */
 function leggiAttivitàDaFile() {
     try {
-        const datiJSON = fs.readFileSync("src/promemoria.json", 'utf8');
-        return JSON.parse(datiJSON);
+        const datiJSON = fs.readFileSync("src/promemoria.json", 'utf8'); // Legge il contenuto del file JSON "src/promemoria.json" in modalità 'utf8'
+        return JSON.parse(datiJSON); // Parsea il contenuto JSON letto e lo restituisce come array di oggetti
     } catch (errore) {
-        return [];
+        return []; // Se si verifica un errore durante la lettura/parsing del file, restituisce un array vuoto
     }
 }
 /**
- * Cerca le attività nella lista logica (array), anche se la chiave non è identica all'attività che si trova nell'array.
- * @param {Attività[]} vet - Array delle attività
- * @returns {Attività[] | false} Array delle attività che corrispondo ai criteri di ricerca.
+ * @description Questa funzione permette di cercare attività all'interno dell'array delle attività (vet) 
+ * in base a parole chiave inserite dall'utente. Restituisce un array di attività che corrispondono alla ricerca.
+ * @param {Array} vet - Array di oggetti attività.
+ * @returns {Array} - Array di attività che corrispondono ai criteri di ricerca.
  */
 function ricercaAttività(vet) {
     console.log();
-    let paroleChiave = prompt("              INSERIRE ATTIVITÀ DA RICERCARE > ")
-    paroleChiave = paroleChiave.toLowerCase();
-    let risultati = [];
-    for (let i = 0; i < vet.length; i++) {
-        const attivita = vet[i].nomeAttività.toLowerCase();
-        if (paroleChiave.length === 1) {
-            if (attivita.startsWith(paroleChiave)) {
-                risultati.push(vet[i]);
-            }
+    let paroleChiave = prompt("              INSERIRE ATTIVITÀ DA RICERCARE > "); // Chiede all'utente di inserire la parola chiave per la ricerca
+    paroleChiave = paroleChiave.toLowerCase(); // Converte la parola chiave in minuscolo per rendere la ricerca case-insensitive
+    const risultati = vet.filter(attività => {
+        const nomeAttività = attività.nomeAttività.toLowerCase(); // Converte il nome dell'attività in minuscolo
+        if (paroleChiave.length === 1) { // Se la parola chiave ha 1 carattere 
+            return nomeAttività.startsWith(paroleChiave);// Aggiunge l'attività ai risultati se c'è una corrispondenza
         } else {
-            let tuttePresenti = attivita.includes(paroleChiave);
-            if (tuttePresenti) {
-                risultati.push(vet[i]);
-            }
+            return nomeAttività.includes(paroleChiave);// Controlla se il nome dell'attività contiene la parola chiave al suo interno.
         }
-    }
+    });
     if(risultati.length===0)
     {
             console.log("\n              ════════════════════════════════════");
@@ -157,12 +166,13 @@ function ricercaAttività(vet) {
             console.log("              ════════════════════════════════════\n");
             prompt("                PREMERE INVIO PER CONTINUARE ...")
     }
-    return risultati;
+    return risultati; // Restituisce l'array di risultati
 }
-
 /**
- * Modifica il nome di un'attività in base all'input dell'utente.
- * @param {Attività[]} vet - Array delle attività.
+ * @description Questa funzione permette di modificare il nome di un'attività specifica cercata dall'utente. 
+ * L'utente può cercare un'attività, confermare la modifica e inserire un nuovo nome per l'attività. 
+ * Le modifiche vengono salvate nel file delle attività.
+ * @param {Array} vet - Array di oggetti attività.
  */
 function modificaAttività(vet) {
     console.clear();
@@ -174,14 +184,14 @@ function modificaAttività(vet) {
     console.log("       ║   /_/  /_/\\____/_____/___/_/   /___/\\____/_/  |_|   ║");
     console.log("       ║                                                     ║")
     console.log("       ╚═════════════════════════════════════════════════════╝");
-    let risultato = ricercaAttività(vet);
-    if (risultato.length === 1) {
+    let risultato = ricercaAttività(vet); // Effettua la ricerca dell'attività
+    if (risultato.length === 1) { // Controlla se è stata trovata esattamente una attività
         let conferma;
         do {
         console.log("\n                        ══════════════════");
         console.log("                         ATTIVITÀ TROVATA ");
         console.log("                        ══════════════════\n");
-        visualizzaAttività(risultato);
+        visualizzaAttività(risultato); // Visualizza l'attività trovata
             console.log("\n                     ┌─────────────────────┐");
             console.log("                     │DESIDERI MODIFICARE? │");
             console.log("                     │1: SÌ                │");
@@ -193,7 +203,7 @@ function modificaAttività(vet) {
                     console.log("\n                     ═══════════════════════");
                     console.log("                     INSERISCI IL NUOVO NOME");
                     console.log("                     ═══════════════════════");
-                    risultato[0].nomeAttività = prompt("                     > ");
+                    risultato[0].nomeAttività = prompt("                     > "); // Modifica il nome dell'attività
                     salvaAttivitàSuFile(vet);
                     console.log("\n            ═══════════════════════════════════════════");
                     console.log("            NOME DELL'ATTIVITÀ MODIFICATO CON SUCCESSO!");
@@ -216,18 +226,21 @@ function modificaAttività(vet) {
             prompt("                  PREMERE INVIO PER CONTINUARE ...")
             console.clear();
         } while (conferma !== 1 && conferma !== 2);
-    } else if(risultato.length>1){
+    } else if(risultato.length>1){ // Gestisce il caso in cui la ricerca ritorni più di un risultato
         console.log("\n════════════════════════════════════════════════════════════════════════════");
         console.log("!!!ATTENZIONE LA RICERCA HA AVUTO PIÙ RISULTATI, SPECIFICARE MAGGIORMENTE!!!")
         console.log("════════════════════════════════════════════════════════════════════════════\n");
-        visualizzaAttività(risultato);
+        visualizzaAttività(risultato); // Visualizza tutte le attività trovate
         prompt("\n                   PREMERE INVIO PER CONTINUARE ...");
-        modificaAttività(vet);
+        modificaAttività(vet); // Richiama la funzione per specificare meglio la ricerca
     }
 }
 /**
- * Marca attività
- * @param {Attività[]} vet - Array delle attività.
+ * @description Questa funzione permette di marcare un'attività come completata. 
+ * L'utente può cercare un'attività specifica e, se trovata, marcare la sua conclusione. 
+ * Se l'attività è già segnata come completata, viene mostrato un messaggio di errore. 
+ * La funzione aggiorna il file delle attività se l'operazione di marcatura è completata con successo.
+ * @param {Array} vet - Array di oggetti attività.
  */
 function marcaturaAttività(vet) {
     console.clear();
@@ -238,15 +251,15 @@ function marcaturaAttività(vet) {
     console.log("       ║  /_/  /_/\\_,_/_/  \\__/\\_,_/\\__/\\_,_/_/  \\_,_/   ║");
     console.log("       ║                                                 ║");
     console.log("       ╚═════════════════════════════════════════════════╝");
-    let risultato = ricercaAttività(vet);
-    if (risultato.length === 1) {
+    let risultato = ricercaAttività(vet); // Effettua la ricerca dell'attività
+    if (risultato.length === 1) { // Controlla se è stata trovata esattamente una attività
         console.log("\n                     ══════════════════");
         console.log("                      ATTIVITÀ TROVATA ");
         console.log("                     ══════════════════\n");
-        visualizzaAttività(risultato);
+        visualizzaAttività(risultato); // Visualizza l'attività trovata
         prompt("\n                PREMERE INVIO PER CONTINUARE ...")
         console.clear();
-        if(risultato[0].marcaturaAttività===true){
+        if(risultato[0].marcaturaAttività===true){ // Controlla se l'attività è già marcata come completata
             console.log("\n       ═════════════════════════════════════════════════════");
             console.log("       !!!ERRORE, NON PUOI MARCARE UN'ATTIVITÀ GIÀ SVOLTA!!!");
             console.log("       ═════════════════════════════════════════════════════\n");
@@ -264,7 +277,7 @@ function marcaturaAttività(vet) {
                 conferma = parseInt(prompt("                  > "));
                 switch (conferma) {
                     case 1: {
-                            risultato[0].marcaturaAttività=true;           
+                            risultato[0].marcaturaAttività=true; // Marca l'attività come completata           
                             console.log("\n                  ═════════════════════════════");                     
                             console.log("                  ATTIVITÀ SEGNATA COME SVOLTA!");
                             console.log("                  ═════════════════════════════\n");
@@ -286,22 +299,25 @@ function marcaturaAttività(vet) {
                 prompt("                   PREMERE INVIO PER CONTINUARE ...");
                 console.clear();
             } while (conferma !== 1 && conferma !== 2);
-            salvaAttivitàSuFile(vet);
+            salvaAttivitàSuFile(vet); // Salva le modifiche al file
         }
-    } else if(risultato.length>1){
+    } else if(risultato.length>1){ // Gestisce il caso in cui la ricerca ritorni più di un risultato
         console.log("\n════════════════════════════════════════════════════════════════════════════");
         console.log("!!!ATTENZIONE LA RICERCA HA AVUTO PIÙ RISULTATI, SPECIFICARE MAGGIORMENTE!!!");
         console.log("════════════════════════════════════════════════════════════════════════════\n");
-        visualizzaAttività(risultato);
+        visualizzaAttività(risultato); // Visualizza tutte le attività trovate
         prompt("\n                  PREMERE INVIO PER CONTINUARE ...");
-        marcaturaAttività(vet);
+        marcaturaAttività(vet); // Richiama la funzione per specificare meglio la ricerca
     }
 }
 /**
- * Menu per la modifica delle attività, tra cui aggiunta, eliminazione, modifica e contrassegno delle attività.
+ * @description Questa funzione gestisce il menu di modifica dell'applicazione. 
+ * Mostra un sottomenu con opzioni per aggiungere, cancellare, modificare o marcare le attività. 
+ * L'utente può selezionare un'opzione inserendo il numero corrispondente. Utilizza un ciclo 
+ * do-while per mantenere il sottomenu attivo fino a quando l'utente sceglie di tornare indietro.
  */
 function menuModifica() {
-    let vet = leggiAttivitàDaFile();
+    let vet;
     let scelta = 0;
     do {
         console.clear();
@@ -321,22 +337,22 @@ function menuModifica() {
         console.log("                     │5: INDIETRO             │");
         console.log("                     └────────────────────────┘\n");
         scelta = parseInt(prompt("                     > "));
+        vet = leggiAttivitàDaFile(); // Legge le attività da un file e le memorizza in un array in modo che sia sempre aggiornato
         switch (scelta) {
             case 1: {
-                aggiungiAttività(vet);
+                aggiungiAttività(vet); // Chiamata alla funzione per aggiungere un'attività
                 break;
             }
             case 2: {
-                vet = leggiAttivitàDaFile();
-                cancellaAttività(vet);
+                cancellaAttività(vet); // Chiamata alla funzione per cancellare un'attività
                 break;
             }
             case 3: {
-                modificaAttività(vet);
+                modificaAttività(vet); // Chiamata alla funzione per modificare un'attività
                 break;
             }
             case 4: {
-                marcaturaAttività(vet);
+                marcaturaAttività(vet); // Chiamata alla funzione per marcare un'attività
                 break;
             }
             case 5: {
@@ -354,8 +370,10 @@ function menuModifica() {
     } while (scelta !== 5);
 }
 /**
- * Visualizza elenco attività in ordine di marcatura.
- * @param {Attività[]} vet - Array delle attività.
+ * @description Questa funzione visualizza l'elenco delle attività fornite in un array. 
+ * Le attività non completate vengono mostrate normalmente, mentre le attività completate 
+ * sono visualizzate con un effetto di testo barrato.
+ * @param {Array} vet - Array di oggetti attività, ciascuno con proprietà `nomeAttività` e `marcaturaAttività`.
  */
 function visualizzaAttività(vet)
 {
@@ -376,9 +394,12 @@ function visualizzaAttività(vet)
         }
     }
 }
-
 /**
- * Menu per visualizzare le attività, inclusa la visualizzazione di tutte le attività e la ricerca di un'attività.
+ * @description Questa funzione gestisce il menu di visualizzazione dell'applicazione. 
+ * Mostra un sottomenu con opzioni per visualizzare l'elenco delle attività, 
+ * cercare un'attività specifica, o tornare indietro al menu principale. 
+ * Utilizza un ciclo do-while per mantenere il sottomenu attivo fino a quando 
+ * l'utente sceglie di tornare indietro.
  */
 function menuVisualizzazione() {
     let scelta = 0;
@@ -408,7 +429,7 @@ function menuVisualizzazione() {
                 console.log("              ║  /___/_/\\__/_//_/\\__/\\___/    ║");
                 console.log("              ║                               ║");
                 console.log("              ╚═══════════════════════════════╝");
-                visualizzaAttività(leggiAttivitàDaFile());
+                visualizzaAttività(leggiAttivitàDaFile()); // Chiama la funzione per visualizzare le attività dal file
                 prompt("\n                PREMERE INVIO PER CONTINUARE ...");
                 break;
             }
@@ -421,7 +442,7 @@ function menuVisualizzazione() {
                 console.log("              ║  /_/|_/_/\\__/\\__/_/  \\__/\\_,_/    ║");
                 console.log("              ║                                   ║")
                 console.log("              ╚═══════════════════════════════════╝");
-                let risultato=ricercaAttività(leggiAttivitàDaFile())
+                let risultato=ricercaAttività(leggiAttivitàDaFile()); // Chiama la funzione per cercare un'attività
                 console.log();
                 if(risultato.length>0){
                     visualizzaAttività(risultato);
@@ -441,14 +462,16 @@ function menuVisualizzazione() {
         }
     } while (scelta !== 3);
 }
-
 /**
- * Il menu principale del programma. Consente la navigazione tra diverse funzionalità.
+ * @description Funzione main che gestisce il menu principale dell'applicazione.
+ * Mostra un menu con tre opzioni: gestire le attività, visualizzare le attività, o uscire dall'applicazione.
+ * L'utente può selezionare un'opzione inserendo il numero corrispondente.
+ * La funzione utilizza un ciclo do-while per mantenere il menu attivo fino a quando l'utente sceglie di uscire.
  */
 function main() {
     let scelta = 0;
     do {
-        console.clear();
+        console.clear(); // Pulisce la console per un aspetto pulito
         console.log("       ╔══════════════════════════════════════════════════════════════════════╗");
         console.log("       ║       ____  ____  ____  __  ___ _______  ___ ___  ____  ____ ___     ║");
         console.log("       ║      / __ \\/ __ \\/ __ \\/  |/  / ____/  |/  / __ \\/ __ \\/  _/   |     ║");
@@ -486,5 +509,4 @@ function main() {
     } while (scelta !== 3);
     console.clear();
 }
-
 main();
