@@ -21,8 +21,9 @@ class Attività {
     /**
      * Crea una nuova istanza di Attività.
      * @param {string} nomeAttività - Il nome dell'attività.
+     * @param {string} dataAttività - La data dell'attività.
      */
-    constructor(nomeAttività) {
+    constructor(nomeAttività, dataAttività) {
         /**
          * Il nome dell'attività.
          * @type {string}
@@ -33,8 +34,127 @@ class Attività {
          * @type {boolean}
          */
         this.marcaturaAttività = false;
+        /**
+         * La data dell'attività.
+         * @type {string}
+         */
+        this.dataAttività = dataAttività;
     }
 }
+
+class Promemoria {
+    constructor() {
+        this.mappa = new Map([
+            ['Lavoro', []],
+            ['Personale', []],
+            ['Hobby', []],
+        ]);
+    }
+    aggiungiAttività(categoria, attività) {
+        if (!this.mappa.has(categoria)) 
+            this.mappa.set(categoria, [attività]);
+        else
+            this.mappa.get(categoria).push(attività);
+    }
+    eliminaAttività(nomeAttività) {
+        let attivitàEliminata = false;
+        for (const [categoria, attivitàList] of this.mappa.entries()) {
+            const indice = attivitàList.findIndex(a => a.nomeAttività === nomeAttività);
+            if (indice !== -1) {
+                attivitàList.splice(indice, 1);
+                attivitàEliminata = true;
+            }
+        }
+        return attivitàEliminata;
+    }
+    ricercaAttività(paroleChiave) {
+        const paroleChiaveLower = paroleChiave.toLowerCase();
+        const risultatiMappa = new Map();
+
+        for (const [categoria, attivitàList] of this.mappa.entries()) {
+            const risultati = attivitàList.filter(attività => {
+                const nomeAttività = attività.nomeAttività.toLowerCase();
+                if (paroleChiaveLower.length === 1) {
+                    return nomeAttività.startsWith(paroleChiaveLower);
+                } else {
+                    return nomeAttività.includes(paroleChiaveLower);
+                }
+            });
+
+            if (risultati.length > 0) {
+                risultatiMappa.set(categoria, risultati);
+                this.stampaMappa(new Map([[categoria, risultati]]));
+            }
+        }
+        if(Array.from(risultati.keys()).length===0)
+        {
+                console.log("\n              ════════════════════════════════════");
+                console.log("              !!!NESSUNA CORRISPONDENZA TROVATA!!!");
+                console.log("              ════════════════════════════════════\n");
+                prompt("                PREMERE INVIO PER CONTINUARE ...")
+        }
+        return risultatiMappa;
+    }
+    modificaAttività(vecchiaNomeAttività, nuovoNomeAttività, nuovaDataAttività) {
+        for (const [categoria, attivitàList] of this.mappa.entries()) {
+            const indice = attivitàList.findIndex(a => a.nomeAttività === vecchiaNomeAttività);
+            if (indice !== -1) {
+                if (nuovoNomeAttività) {
+                    attivitàList[indice].nomeAttività = nuovoNomeAttività;
+                }
+                if (nuovaDataAttività) {
+                    attivitàList[indice].dataAttività = nuovaDataAttività;
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Marca un'attività come completata.
+     * @param {string} nomeAttività - Il nome dell'attività da marcare.
+     * @returns {boolean} - True se l'attività è stata marcata, altrimenti false.
+     */
+    marcaAttività(nomeAttività) {
+        for (const [categoria, attivitàList] of this.mappa.entries()) {
+            const indice = attivitàList.findIndex(a => a.nomeAttività === nomeAttività);
+            if (indice !== -1) {
+                attivitàList[indice].marcaturaAttività = true;
+                return true;
+            }
+        }
+        return false;
+    }
+    visualizzaTutte() {
+        this.stampaMappa(this.mappa);
+    }
+    stampaMappa(mappa) {
+        for (const [categoria, attivitàList] of mappa.entries()) {
+            console.log(`Categoria : ${categoria}`);
+            if (attivitàList.length > 0) {
+                let c = 0;
+                // Visualizza attività non marcate
+                for (let i = 0; i < attivitàList.length; i++) {
+                    if (!attivitàList[i].marcaturaAttività) {
+                        c++;
+                        console.log(`    - ${c}. ${attivitàList[i].nomeAttività} (${attivitàList[i].dataAttività})`);
+                    }
+                }
+                // Visualizza attività marcate
+                for (let k = 0; k < attivitàList.length; k++) {
+                    if (attivitàList[k].marcaturaAttività) {
+                        c++;
+                        console.log(`    - ${c}. \x1b[9m${attivitàList[k].nomeAttività} (${attivitàList[k].dataAttività})\x1b[0m`);
+                    }
+                }
+            } else {
+                console.log('    Nessuna attività');
+            }
+        }
+    }
+}
+
 /**
  * @description Questa funzione prende un array di oggetti attività e lo converte in una stringa JSON.
  * Successivamente, scrive questa stringa in un file chiamato "promemoria.json" nella cartella "src".
@@ -42,13 +162,46 @@ class Attività {
  * @param {Array<Attività>} attività - L'array di oggetti Attività da salvare.
  */
 function salvaAttivitàSuFile(attività) {
-        fs.writeFileSync("src/promemoria.json", JSON.stringify(attività));
+        fs.writeFileSync("src/promemoria.json", JSON.stringify(attività.mappa));
 }
+function formattaData(input) {
+    var parti = input.split('/');
+    
+    // Controlla se la stringa contiene tre parti
+    if (parti.length !== 3) {
+        return false;
+    }
+    
+    var giorno = parseInt(parti[0], 10);
+    var mese = parseInt(parti[1], 10);
+    var anno = parseInt(parti[2], 10);
+
+    // Verifica se il parsing dei numeri ha restituito valori validi
+    if (isNaN(giorno) || isNaN(mese) || isNaN(anno)) {
+        return false;
+    }
+    // Verifica se l'anno è a due cifre e lo converte in formato a quattro cifre
+    if (anno < 100) 
+        anno += 2000;
+
+    // Verifica la validità del giorno e del mese
+    if (giorno < 1 || giorno > 31 || mese < 1 || mese > 12) 
+        return false;
+
+    // Aggiunge zero iniziale se necessario per giorno e mese
+    if (giorno < 10) 
+        giorno = '0' + giorno;
+    if (mese < 10) 
+        mese = '0' + mese;
+
+    return giorno + '/' + mese + '/' + anno;
+}
+
 /**
  * @description Questa funzione permette di aggiungere una nuova attività all'elenco.
  * @param {Array} vet - Array di oggetti attività.
  */
-function aggiungiAttività(vet)
+function aggiungiAttività(promemoria)
 {
     console.clear(); // Pulisce la console per una visualizzazione pulita
     console.log("              ╔══════════════════════════════════════════╗");
@@ -59,9 +212,22 @@ function aggiungiAttività(vet)
     console.log("              ║         \\__//\\__/            \\__/        ║");
     console.log("              ║                                          ║");
     console.log("              ╚══════════════════════════════════════════╝\n");
-    const nomeAttività = prompt("              INSERIRE NOME DELLA NUOVA ATTIVITÀ > ");
-    vet.push(new Attività(nomeAttività)); // Aggiunge la nuova attività all'array delle attività
-    salvaAttivitàSuFile(vet); // Salva l'array delle attività aggiornato su file
+    let categoriaAttività = prompt("              CATEGORIA > ");
+    console.log();
+    const nomeAttività = prompt("              NOME > ");
+    console.log();
+    let dataAttività;
+    do{
+        dataAttività = prompt("              DATA (DD/MM/YYYY o D/M/YYYY) > ");
+        if(formattaData(dataAttività)===false)
+        {
+            console.log("\n                      ═══════════════════════");
+            console.log("                      !!!VALORE NON VALIDO!!!");
+            console.log("                      ═══════════════════════\n");
+        }
+    }while(formattaData(dataAttività)===false);
+    console.log();
+    promemoria.aggiungiAttività(categoriaAttività.charAt(0).toUpperCase() + categoriaAttività.slice(1).toLowerCase(),new Attività(nomeAttività.charAt(0).toUpperCase() + nomeAttività.slice(1).toLowerCase(),formattaData(dataAttività))); 
     console.log("\n                   ═══════════════════════════════");                     
     console.log("                   ATTIVITÀ AGGIUNTA CON SUCCESSO!");
     console.log("                   ═══════════════════════════════\n"); 
@@ -71,7 +237,7 @@ function aggiungiAttività(vet)
  * @description Questa funzione permette di cercare e cancellare un'attività dall'elenco.
  * @param {Array} vet - Array di oggetti attività.
  */
-function cancellaAttività(vet) {
+function cancellaAttività(promemoria) {
     console.clear();
     console.log("              ╔═════════════════════════════════════╗");
     console.log("              ║    _____                  ____      ║");    
@@ -79,15 +245,16 @@ function cancellaAttività(vet) {
     console.log("              ║  / /__/ _  / _ \\/ __/ -_) / / _  /  ║");
     console.log("              ║  \\___/\\___/_//_/\\__/\\__/_/_/\\___/   ║");
     console.log("              ║                                     ║");
-    console.log("              ╚═════════════════════════════════════╝");
-    let risultato = ricercaAttività(vet); // Cerca l'attività nell'array tramite la funzione ricercaAttività
-    if (risultato.length === 1) { // Controlla se è stata trovata esattamente una attività
-        let conferma = 0;
+    console.log("              ╚═════════════════════════════════════╝\n\n");
+    let attività=prompt("              ATTIVITÀ > ");
+    risultati = promemoria.ricercaAttività(attività.charAt(0).toUpperCase() + attività.slice(1).toLowerCase());
+    if (Array.from(risultati.keys()).length===1) { // Controlla se è stata trovata esattamente una attività
+        let conferma;
         do {
-            console.log("\n                         ══════════════════");
-            console.log("                          ATTIVITÀ TROVATA");
-            console.log("                         ══════════════════\n");
-            visualizzaAttività(risultato); // Visualizza l'attività trovata
+            console.log("\n                        ══════════════════");
+            console.log("                         ATTIVITÀ TROVATA ");
+            console.log("                        ══════════════════\n");
+            promemoria.stampaMappa(risultati);
             console.log("\n                 ┌─────────────────────────────────┐");
             console.log("                 │ VUOI ELIMINARE?                 │");
             console.log("                 │ 1 : SÌ                          │");
@@ -96,8 +263,7 @@ function cancellaAttività(vet) {
             conferma = parseInt(prompt("                 > " ));
             switch (conferma) {
                 case 1: {
-                    vet = vet.filter(attività => attività.nomeAttività !== risultato[0].nomeAttività); // Filtra l'attività dall'array e aggiorna il file
-                    salvaAttivitàSuFile(vet); // Funzione utilizzata per salvare l'array aggiornato nel file.
+                    promemoria.eliminaAttività(attività);
                     console.log("\n                ══════════════════════════════════════");
                     console.log("                !!!ATTIVITÀ CANCELLATA CON SUCCESSO!!!");
                     console.log("                ══════════════════════════════════════\n");
@@ -119,13 +285,13 @@ function cancellaAttività(vet) {
             prompt("                  PREMERE INVIO PER CONTINUARE ...")
             console.clear();
         } while (conferma !== 1 && conferma !== 2);
-    } else if(risultato.length>1){ // Gestisce il caso in cui la ricerca ritorni più di un risultato
+    } else if(Array.from(risultati.keys()).length>1){ // Gestisce il caso in cui la ricerca ritorni più di un risultato
         console.log("\n════════════════════════════════════════════════════════════════════════════");
         console.log("!!!ATTENZIONE LA RICERCA HA AVUTO PIÙ RISULTATI, SPECIFICARE MAGGIORMENTE!!!");
         console.log("════════════════════════════════════════════════════════════════════════════");
-        visualizzaAttività(risultato); // Visualizza tutte le attività trovate
+        promemoria.stampaMappa(risultati);
         prompt("\n                 PREMERE INVIO PER CONTINUARE ...")
-        cancellaAttività(vet); // Richiama la funzione per specificare meglio la ricerca
+        cancellaAttività(promemoria); // Richiama la funzione per specificare meglio la ricerca
     }
 }
 /**
@@ -136,37 +302,10 @@ function cancellaAttività(vet) {
 function leggiAttivitàDaFile() {
     try {
         const datiJSON = fs.readFileSync("src/promemoria.json", 'utf8'); // Legge il contenuto del file JSON "src/promemoria.json" in modalità 'utf8'
-        return JSON.parse(datiJSON); // Parsea il contenuto JSON letto e lo restituisce come array di oggetti
+        return JSON.parse(new Promemoria().mappa=datiJSON); // Parsea il contenuto JSON letto e lo restituisce come array di oggetti
     } catch (errore) {
-        return []; // Se si verifica un errore durante la lettura/parsing del file, restituisce un array vuoto
+        return new Promemoria(); // Se si verifica un errore durante la lettura/parsing del file, restituisce un array vuoto
     }
-}
-/**
- * @description Questa funzione permette di cercare attività all'interno dell'array delle attività (vet) 
- * in base a parole chiave inserite dall'utente. Restituisce un array di attività che corrispondono alla ricerca.
- * @param {Array} vet - Array di oggetti attività.
- * @returns {Array} - Array di attività che corrispondono ai criteri di ricerca.
- */
-function ricercaAttività(vet) {
-    console.log();
-    let paroleChiave = prompt("              INSERIRE ATTIVITÀ DA RICERCARE > "); // Chiede all'utente di inserire la parola chiave per la ricerca
-    paroleChiave = paroleChiave.toLowerCase(); // Converte la parola chiave in minuscolo per rendere la ricerca case-insensitive
-    const risultati = vet.filter(attività => {
-        const nomeAttività = attività.nomeAttività.toLowerCase(); // Converte il nome dell'attività in minuscolo
-        if (paroleChiave.length === 1) { // Se la parola chiave ha 1 carattere 
-            return nomeAttività.startsWith(paroleChiave);// Aggiunge l'attività ai risultati se c'è una corrispondenza
-        } else {
-            return nomeAttività.includes(paroleChiave);// Controlla se il nome dell'attività contiene la parola chiave al suo interno.
-        }
-    });
-    if(risultati.length===0)
-    {
-            console.log("\n              ════════════════════════════════════");
-            console.log("              !!!NESSUNA CORRISPONDENZA TROVATA!!!");
-            console.log("              ════════════════════════════════════\n");
-            prompt("                PREMERE INVIO PER CONTINUARE ...")
-    }
-    return risultati; // Restituisce l'array di risultati
 }
 /**
  * @description Questa funzione permette di modificare il nome di un'attività specifica cercata dall'utente. 
@@ -242,7 +381,7 @@ function modificaAttività(vet) {
  * La funzione aggiorna il file delle attività se l'operazione di marcatura è completata con successo.
  * @param {Array} vet - Array di oggetti attività.
  */
-function marcaturaAttività(vet) {
+function marcaturaAttività(promemoria) {
     console.clear();
     console.log("\n       ╔═════════════════════════════════════════════════╗");
     console.log("       ║     __  ___                  __                 ║");               
@@ -316,8 +455,7 @@ function marcaturaAttività(vet) {
  * L'utente può selezionare un'opzione inserendo il numero corrispondente. Utilizza un ciclo 
  * do-while per mantenere il sottomenu attivo fino a quando l'utente sceglie di tornare indietro.
  */
-function menuModifica() {
-    let vet;
+function menuModifica(promemoria) {
     let scelta = 0;
     do {
         console.clear();
@@ -340,19 +478,19 @@ function menuModifica() {
         vet = leggiAttivitàDaFile(); // Legge le attività da un file e le memorizza in un array in modo che sia sempre aggiornato
         switch (scelta) {
             case 1: {
-                aggiungiAttività(vet); // Chiamata alla funzione per aggiungere un'attività
+                aggiungiAttività(promemoria); // Chiamata alla funzione per aggiungere un'attività
                 break;
             }
             case 2: {
-                cancellaAttività(vet); // Chiamata alla funzione per cancellare un'attività
+                cancellaAttività(promemoria); // Chiamata alla funzione per cancellare un'attività
                 break;
             }
             case 3: {
-                modificaAttività(vet); // Chiamata alla funzione per modificare un'attività
+                modificaAttività(promemoria); // Chiamata alla funzione per modificare un'attività
                 break;
             }
             case 4: {
-                marcaturaAttività(vet); // Chiamata alla funzione per marcare un'attività
+                marcaturaAttività(promemoria); // Chiamata alla funzione per marcare un'attività
                 break;
             }
             case 5: {
@@ -370,35 +508,10 @@ function menuModifica() {
     } while (scelta !== 5);
 }
 /**
- * @description Questa funzione visualizza l'elenco delle attività fornite in un array. 
- * Le attività non completate vengono mostrate normalmente, mentre le attività completate 
- * sono visualizzate con un effetto di testo barrato.
- * @param {Array} vet - Array di oggetti attività, ciascuno con proprietà `nomeAttività` e `marcaturaAttività`.
- */
-function visualizzaAttività(vet)
-{
-    let c=0;
-    for(let i=0;i<vet.length;i++)
-        if(!vet[i].marcaturaAttività)
-        {
-            c++;
-            console.log("            - ",c,". ",vet[i].nomeAttività)
-        }
-    
-    for(let k=0;k<vet.length;k++)
-    {
-        if(vet[k].marcaturaAttività)
-        {
-            c++;
-            console.log("            - ",c,". \x1b[9m",vet[k].nomeAttività,"\x1b[0m")
-        }
-    }
-}
-/**
  * @description Stampa se ci sono attività nel file l'elenco delle attività richiamando 
  * la funzione 'visualizzaAttività(vet)'
  */
-function elencoAttività()
+function elencoAttività(promemoria)
 {
     console.clear();
     console.log("              ╔═══════════════════════════════╗");
@@ -408,20 +521,13 @@ function elencoAttività()
     console.log("              ║  /___/_/\\__/_//_/\\__/\\___/    ║");
     console.log("              ║                               ║");
     console.log("              ╚═══════════════════════════════╝\n");
-    let vet=leggiAttivitàDaFile() // Chiama la funzione per visualizzare le attività dal file
-    if(vet.length>0)
-        visualizzaAttività(vet);
-    else{
-        console.log("\n                    ══════════════════");
-        console.log("                    !!!ELENCO VUOTO!!!");
-        console.log("                    ══════════════════\n");
-    }
+    promemoria.visualizzaTutte();
     prompt("\n                PREMERE INVIO PER CONTINUARE ...");
 }
 /**
  * @description Stampa decorativa della parola ricerca e ricerca attività nel file json
  */
-function trovaAttività()
+function trovaAttività(promemoria)
 {
     console.clear();
     console.log("              ╔═══════════════════════════════════╗");
@@ -431,7 +537,7 @@ function trovaAttività()
     console.log("              ║  /_/|_/_/\\__/\\__/_/  \\__/\\_,_/    ║");
     console.log("              ║                                   ║")
     console.log("              ╚═══════════════════════════════════╝");
-    let risultato=ricercaAttività(leggiAttivitàDaFile()); // Chiama la funzione per cercare un'attività
+    let risultato=ricercaAttività(); // Chiama la funzione per cercare un'attività
     console.log();
     if(risultato.length>0){
         visualizzaAttività(risultato);
@@ -445,7 +551,7 @@ function trovaAttività()
  * Utilizza un ciclo do-while per mantenere il sottomenu attivo fino a quando 
  * l'utente sceglie di tornare indietro.
  */
-function menuVisualizzazione() {
+function menuVisualizzazione(promemoria) {
     let scelta = 0;
     do {
         console.clear();
@@ -465,11 +571,11 @@ function menuVisualizzazione() {
         scelta = parseInt(prompt("                         > "));
         switch (scelta) {
             case 1: {
-                elencoAttività();
+                elencoAttività(promemoria);
                 break;
             }
             case 2: {
-                trovaAttività();
+                trovaAttività(promemoria);
                 break;
             }
             case 3: {
@@ -492,6 +598,7 @@ function menuVisualizzazione() {
  */
 function main() {
     let scelta = 0;
+    let promemoria=leggiAttivitàDaFile();
     do {
         console.clear(); // Pulisce la console per un aspetto pulito
         console.log("       ╔══════════════════════════════════════════════════════════════════════╗");
@@ -511,14 +618,15 @@ function main() {
         scelta = parseInt(prompt("                           > "));
         switch (scelta) {
             case 1: {
-                menuModifica();
+                menuModifica(promemoria);
                 break;
             }
             case 2: {
-                menuVisualizzazione();
+                menuVisualizzazione(promemoria);
                 break;
             }
             case 3: {
+                salvaAttivitàSuFile(promemoria);
                 break;
             }
             default:
