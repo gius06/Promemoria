@@ -74,11 +74,10 @@ class Promemoria {
         for (const [categoria, attivitàList] of this.mappa.entries()) {
             const risultati = attivitàList.filter(attività => {
                 const nomeAttività = attività.nomeAttività.toLowerCase();
-                if (paroleChiaveLower.length === 1) {
+                if (paroleChiaveLower.length === 1) 
                     return nomeAttività.startsWith(paroleChiaveLower);
-                } else {
+                else 
                     return nomeAttività.includes(paroleChiaveLower);
-                }
             });
 
             if (risultati.length > 0) {
@@ -131,26 +130,25 @@ class Promemoria {
     }
     stampaMappa(mappa) {
         for (const [categoria, attivitàList] of mappa.entries()) {
-            console.log(`Categoria : ${categoria}`);
+            console.log(`\n          Categoria => ${categoria}`);
             if (attivitàList.length > 0) {
                 let c = 0;
                 // Visualizza attività non marcate
                 for (let i = 0; i < attivitàList.length; i++) {
                     if (!attivitàList[i].marcaturaAttività) {
                         c++;
-                        console.log(`    - ${c}. ${attivitàList[i].nomeAttività} (${attivitàList[i].dataAttività})`);
+                        console.log(`              - ${c}. ${attivitàList[i].nomeAttività} (${attivitàList[i].dataAttività})`);
                     }
                 }
                 // Visualizza attività marcate
                 for (let k = 0; k < attivitàList.length; k++) {
                     if (attivitàList[k].marcaturaAttività) {
                         c++;
-                        console.log(`    - ${c}. \x1b[9m${attivitàList[k].nomeAttività} (${attivitàList[k].dataAttività})\x1b[0m`);
+                        console.log(`              - ${c}. \x1b[9m${attivitàList[k].nomeAttività} (${attivitàList[k].dataAttività})\x1b[0m`);
                     }
                 }
-            } else {
-                console.log('    Nessuna attività');
-            }
+            } else 
+                console.log('              Nessuna attività');
         }
     }
 }
@@ -162,38 +160,45 @@ class Promemoria {
  * @param {Array<Attività>} attività - L'array di oggetti Attività da salvare.
  */
 function salvaAttivitàSuFile(attività) {
-        fs.writeFileSync("src/promemoria.json", JSON.stringify(attività.mappa));
+        fs.writeFileSync("src/promemoria.json", JSON.stringify(Array.from(attività.mappa.entries())));
+}
+/**
+ * @description Questa funzione legge un file JSON contenente attività e le restituisce come array di oggetti. 
+ * Se si verifica un errore durante la lettura del file, restituisce un array vuoto.
+ * @returns {Array} - Array di oggetti attività.
+ */
+function leggiAttivitàDaFile() {
+    const promemoria=new Promemoria();
+    try {
+        const datiJSON = fs.readFileSync("src/promemoria.json", 'utf8'); 
+        promemoria.mappa=new Map(JSON.parse(datiJSON)); 
+        return promemoria;
+    } catch (errore) {
+        return promemoria; 
+    }
 }
 function formattaData(input) {
     var parti = input.split('/');
-    
     // Controlla se la stringa contiene tre parti
-    if (parti.length !== 3) {
+    if (parti.length !== 3) 
         return false;
-    }
-    
     var giorno = parseInt(parti[0], 10);
     var mese = parseInt(parti[1], 10);
     var anno = parseInt(parti[2], 10);
-
     // Verifica se il parsing dei numeri ha restituito valori validi
-    if (isNaN(giorno) || isNaN(mese) || isNaN(anno)) {
+    if (isNaN(giorno) || isNaN(mese) || isNaN(anno)) 
         return false;
-    }
     // Verifica se l'anno è a due cifre e lo converte in formato a quattro cifre
     if (anno < 100) 
         anno += 2000;
-
     // Verifica la validità del giorno e del mese
     if (giorno < 1 || giorno > 31 || mese < 1 || mese > 12) 
         return false;
-
     // Aggiunge zero iniziale se necessario per giorno e mese
     if (giorno < 10) 
         giorno = '0' + giorno;
     if (mese < 10) 
         mese = '0' + mese;
-
     return giorno + '/' + mese + '/' + anno;
 }
 
@@ -214,11 +219,11 @@ function aggiungiAttività(promemoria)
     console.log("              ╚══════════════════════════════════════════╝\n");
     let categoriaAttività = prompt("              CATEGORIA > ");
     console.log();
-    const nomeAttività = prompt("              NOME > ");
+    let nomeAttività = prompt("              NOME > ");
     console.log();
     let dataAttività;
     do{
-        dataAttività = prompt("              DATA (DD/MM/YYYY o D/M/YYYY) > ");
+        dataAttività = prompt("              DATA (D/M/Y) > ");
         if(formattaData(dataAttività)===false)
         {
             console.log("\n                      ═══════════════════════");
@@ -247,7 +252,7 @@ function cancellaAttività(promemoria) {
     console.log("              ║                                     ║");
     console.log("              ╚═════════════════════════════════════╝\n\n");
     let attività=prompt("              ATTIVITÀ > ");
-    risultati = promemoria.ricercaAttività(attività.charAt(0).toUpperCase() + attività.slice(1).toLowerCase());
+    let risultati = promemoria.ricercaAttività(attività.charAt(0).toUpperCase() + attività.slice(1).toLowerCase());
     if (Array.from(risultati.keys()).length===1) { // Controlla se è stata trovata esattamente una attività
         let conferma;
         do {
@@ -295,25 +300,12 @@ function cancellaAttività(promemoria) {
     }
 }
 /**
- * @description Questa funzione legge un file JSON contenente attività e le restituisce come array di oggetti. 
- * Se si verifica un errore durante la lettura del file, restituisce un array vuoto.
- * @returns {Array} - Array di oggetti attività.
- */
-function leggiAttivitàDaFile() {
-    try {
-        const datiJSON = fs.readFileSync("src/promemoria.json", 'utf8'); // Legge il contenuto del file JSON "src/promemoria.json" in modalità 'utf8'
-        return JSON.parse(new Promemoria().mappa=datiJSON); // Parsea il contenuto JSON letto e lo restituisce come array di oggetti
-    } catch (errore) {
-        return new Promemoria(); // Se si verifica un errore durante la lettura/parsing del file, restituisce un array vuoto
-    }
-}
-/**
  * @description Questa funzione permette di modificare il nome di un'attività specifica cercata dall'utente. 
  * L'utente può cercare un'attività, confermare la modifica e inserire un nuovo nome per l'attività. 
  * Le modifiche vengono salvate nel file delle attività.
  * @param {Array} vet - Array di oggetti attività.
  */
-function modificaAttività(vet) {
+function modificaAttività(promemoria) {
     console.clear();
     console.log("       ╔═════════════════════════════════════════════════════╗");
     console.log("       ║       __  _______  ____  _______________________    ║");      
@@ -321,24 +313,27 @@ function modificaAttività(vet) {
     console.log("       ║     / /|_/ / / / / / / // // /_   / // /   / /| |   ║");      
     console.log("       ║    / /  / / /_/ / /_/ // // __/ _/ // /___/ ___ |   ║");      
     console.log("       ║   /_/  /_/\\____/_____/___/_/   /___/\\____/_/  |_|   ║");
-    console.log("       ║                                                     ║")
+    console.log("       ║                                                     ║\n");
+    let attività=prompt("              ATTIVITÀ > ");
+    let risultati = promemoria.ricercaAttività(attività.charAt(0).toUpperCase() + attività.slice(1).toLowerCase());
     console.log("       ╚═════════════════════════════════════════════════════╝");
-    let risultato = ricercaAttività(vet); // Effettua la ricerca dell'attività
-    if (risultato.length === 1) { // Controlla se è stata trovata esattamente una attività
+    if (Array.from(risultati.keys()).length === 1) { // Controlla se è stata trovata esattamente una attività
         let conferma;
         do {
-        console.log("\n                        ══════════════════");
-        console.log("                         ATTIVITÀ TROVATA ");
-        console.log("                        ══════════════════\n");
-        visualizzaAttività(risultato); // Visualizza l'attività trovata
-            console.log("\n                     ┌─────────────────────┐");
-            console.log("                     │DESIDERI MODIFICARE? │");
-            console.log("                     │1: SÌ                │");
-            console.log("                     │2: ANNULLA           │");
-            console.log("                     └─────────────────────┘");
+            console.log("\n                        ══════════════════");
+            console.log("                         ATTIVITÀ TROVATA ");
+            console.log("                        ══════════════════\n");
+            promemoria.stampaMappa(risultati);
+            console.log("\n                     ┌───────────────────────────┐");
+            console.log("                     │COSA DESIDERI MODIFICARE ? │");
+            console.log("                     │1: NOME                    │");
+            console.log("                     │2: DATA                    │");
+            console.log("                     │3: ENTRAMBI (NOME E DATA)  │");
+            console.log("                     │4: TORNA INDIETRO          │");
+            console.log("                     └───────────────────────────┘");
             conferma = parseInt(prompt("                     > "));
             switch (conferma) {
-                case 1: {
+                case 1||3: {
                     console.log("\n                     ═══════════════════════");
                     console.log("                     INSERISCI IL NUOVO NOME");
                     console.log("                     ═══════════════════════");
@@ -347,9 +342,18 @@ function modificaAttività(vet) {
                     console.log("\n            ═══════════════════════════════════════════");
                     console.log("            NOME DELL'ATTIVITÀ MODIFICATO CON SUCCESSO!");
                     console.log("            ═══════════════════════════════════════════\n");
+                }
+                case 2||3: {
+                    console.log("\n                     ═══════════════════════");
+                    console.log("                     INSERISCI LA NUOVA DATA");
+                    console.log("                     ════════════════════════");
+                    promemoria.modificaAttività(Array.from(risultati.keys()).length)
+                    console.log("\n            ═══════════════════════════════════════════");
+                    console.log("            DATA DELL'ATTIVITÀ MODIFICATA CON SUCCESSO!");
+                    console.log("            ═══════════════════════════════════════════\n");
                     break;
                 }
-                case 2: {
+                case 4 : {
                     console.log("\n                       ═══════════════════");
                     console.log("                       MODIFICA ANNULLATA!");
                     console.log("                       ═══════════════════\n");
@@ -365,7 +369,7 @@ function modificaAttività(vet) {
             prompt("                  PREMERE INVIO PER CONTINUARE ...")
             console.clear();
         } while (conferma !== 1 && conferma !== 2);
-    } else if(risultato.length>1){ // Gestisce il caso in cui la ricerca ritorni più di un risultato
+    } else if(Array.from(risultati.keys()).length>1){ // Gestisce il caso in cui la ricerca ritorni più di un risultato
         console.log("\n════════════════════════════════════════════════════════════════════════════");
         console.log("!!!ATTENZIONE LA RICERCA HA AVUTO PIÙ RISULTATI, SPECIFICARE MAGGIORMENTE!!!")
         console.log("════════════════════════════════════════════════════════════════════════════\n");
