@@ -57,15 +57,11 @@ class Promemoria {
             this.mappa.get(categoria).push(attività);
     }
     eliminaAttività(nomeAttività) {
-        let attivitàEliminata = false;
         for (const [categoria, attivitàList] of this.mappa.entries()) {
             const indice = attivitàList.findIndex(a => a.nomeAttività === nomeAttività);
-            if (indice !== -1) {
+            if (indice !== -1)  // Verifica se l'indice è valido
                 attivitàList.splice(indice, 1);
-                attivitàEliminata = true;
-            }
         }
-        return attivitàEliminata;
     }
     ricercaAttività(paroleChiave) {
         const paroleChiaveLower = paroleChiave.toLowerCase();
@@ -89,6 +85,7 @@ class Promemoria {
                 console.log("\n              ════════════════════════════════════");
                 console.log("              !!!NESSUNA CORRISPONDENZA TROVATA!!!");
                 console.log("              ════════════════════════════════════\n");
+                prompt("\n                 PREMERE INVIO PER CONTINUARE ...")
         }
         return risultatiMappa;
     }
@@ -128,25 +125,25 @@ class Promemoria {
     }
     stampaMappa(mappa) {
         for (const [categoria, attivitàList] of mappa.entries()) {
-            console.log(`\n               Categoria => ${categoria}`);
+            console.log(`                    - ${categoria}`);
             if (attivitàList.length > 0) {
                 let c = 0;
                 // Visualizza attività non marcate
                 for (let i = 0; i < attivitàList.length; i++) {
                     if (!attivitàList[i].marcaturaAttività) {
                         c++;
-                        console.log(`                   - ${c}. ${attivitàList[i].nomeAttività} (${attivitàList[i].dataAttività})`);
+                        console.log(`                       ${c}. ${attivitàList[i].nomeAttività} (${attivitàList[i].dataAttività})\n`);
                     }
                 }
                 // Visualizza attività marcate
                 for (let k = 0; k < attivitàList.length; k++) {
                     if (attivitàList[k].marcaturaAttività) {
                         c++;
-                        console.log(`                   - ${c}. \x1b[9m${attivitàList[k].nomeAttività} (${attivitàList[k].dataAttività})\x1b[0m`);
+                        console.log(`                       ${c}. \x1b[9m${attivitàList[k].nomeAttività} (${attivitàList[k].dataAttività})\x1b[0m\n`);
                     }
                 }
             } else 
-                console.log('                   Nessuna attività');
+                console.log('                       Nessuna attività\n');
         }
     }
 }
@@ -215,9 +212,13 @@ function aggiungiAttività(promemoria)
     console.log("              ║         \\__//\\__/            \\__/        ║");
     console.log("              ║                                          ║");
     console.log("              ╚══════════════════════════════════════════╝\n");
+    promemoria.visualizzaTutte();
+    console.log();
     let categoriaAttività = prompt("              CATEGORIA > ");
+    categoriaAttività = categoriaAttività.charAt(0).toUpperCase() + categoriaAttività.slice(1).toLowerCase()
     console.log();
     let nomeAttività = prompt("              NOME > ");
+    nomeAttività=nomeAttività.charAt(0).toUpperCase() + nomeAttività.slice(1).toLowerCase()
     console.log();
     let dataAttività;
     do{
@@ -229,8 +230,9 @@ function aggiungiAttività(promemoria)
             console.log("                      ═══════════════════════\n");
         }
     }while(formattaData(dataAttività)===false);
+    dataAttività=formattaData(dataAttività);
     console.log();
-    promemoria.aggiungiAttività(categoriaAttività.charAt(0).toUpperCase() + categoriaAttività.slice(1).toLowerCase(),new Attività(nomeAttività.charAt(0).toUpperCase() + nomeAttività.slice(1).toLowerCase(),formattaData(dataAttività))); 
+    promemoria.aggiungiAttività(categoriaAttività,new Attività(nomeAttività,dataAttività)); 
     console.log("\n                   ═══════════════════════════════");                     
     console.log("                   ATTIVITÀ AGGIUNTA CON SUCCESSO!");
     console.log("                   ═══════════════════════════════\n"); 
@@ -251,7 +253,7 @@ function cancellaAttività(promemoria) {
     console.log("              ╚═════════════════════════════════════╝\n\n");
     let attività=prompt("              ATTIVITÀ > ");
     let risultati = promemoria.ricercaAttività(attività.charAt(0).toUpperCase() + attività.slice(1).toLowerCase());
-    if (Array.from(risultati.keys()).length===1) { // Controlla se è stata trovata esattamente una attività
+    if (Array.from(risultati.keys()).length===1&&Array.from(risultati.values()).length===1) { // Controlla se è stata trovata esattamente una attività
         let conferma;
         do {
             console.log("\n                        ══════════════════");
@@ -266,7 +268,7 @@ function cancellaAttività(promemoria) {
             conferma = parseInt(prompt("                 > " ));
             switch (conferma) {
                 case 1: {
-                    promemoria.eliminaAttività(attività);
+                    promemoria.eliminaAttività(Array.from(risultati.values())[0][0].nomeAttività);
                     console.log("\n                ══════════════════════════════════════");
                     console.log("                !!!ATTIVITÀ CANCELLATA CON SUCCESSO!!!");
                     console.log("                ══════════════════════════════════════\n");
@@ -288,7 +290,7 @@ function cancellaAttività(promemoria) {
             prompt("                  PREMERE INVIO PER CONTINUARE ...")
             console.clear();
         } while (conferma !== 1 && conferma !== 2);
-    } else if(Array.from(risultati.keys()).length>1){ // Gestisce il caso in cui la ricerca ritorni più di un risultato
+    } else if(Array.from(risultati.keys()).length>1||Array.from(risultati.values()).length>1){ // Gestisce il caso in cui la ricerca ritorni più di un risultato
         console.log("\n════════════════════════════════════════════════════════════════════════════");
         console.log("!!!ATTENZIONE LA RICERCA HA AVUTO PIÙ RISULTATI, SPECIFICARE MAGGIORMENTE!!!");
         console.log("════════════════════════════════════════════════════════════════════════════");
@@ -315,8 +317,7 @@ function modificaAttività(promemoria) {
     console.log("       ╚═════════════════════════════════════════════════════╝\n");
     let attività=prompt("              ATTIVITÀ > ");
     let risultati = promemoria.ricercaAttività(attività.charAt(0).toUpperCase() + attività.slice(1).toLowerCase());
-    
-    if (Array.from(risultati.keys()).length === 1) { // Controlla se è stata trovata esattamente una attività
+    if (Array.from(risultati.keys()).length===1&&Array.from(risultati.values()).length===1) { // Controlla se è stata trovata esattamente una attività
         let conferma;
         do {
             console.log("\n                        ══════════════════");
@@ -332,21 +333,36 @@ function modificaAttività(promemoria) {
             console.log("                     └───────────────────────────┘");
             conferma = parseInt(prompt("                     > "));
             switch (conferma) {
-                case 1||3: {
+                case 3:
+                case 1: {
                     console.log("\n                     ═══════════════════════");
                     console.log("                     INSERISCI IL NUOVO NOME");
-                    console.log("                     ═══════════════════════");
-                    risultati[0].nomeAttività = prompt("                     > "); // Modifica il nome dell'attività
-                    salvaAttivitàSuFile(vet);
+                    console.log("                     ═══════════════════════\n");
+                    let nomeAttività = prompt("                      > ");
+                    nomeAttività=nomeAttività.charAt(0).toUpperCase() + nomeAttività.slice(1).toLowerCase()
+                    promemoria.modificaAttività(Array.from(risultati.values())[0][0].nomeAttività,nomeAttività,null); 
                     console.log("\n            ═══════════════════════════════════════════");
                     console.log("            NOME DELL'ATTIVITÀ MODIFICATO CON SUCCESSO!");
                     console.log("            ═══════════════════════════════════════════\n");
+                    break;
                 }
-                case 2||3: {
-                    console.log("\n                     ═══════════════════════");
-                    console.log("                     INSERISCI LA NUOVA DATA");
-                    console.log("                     ════════════════════════");
-                    promemoria.modificaAttività(Array.from(risultati.keys()).length)
+                case 3:
+                case 2: {
+                    console.log("\n                 ══════════════════════════════");
+                    console.log("                 INSERISCI LA NUOVA DATA (D/M/Y)");
+                    console.log("                 ═══════════════════════════════");
+                    let dataAttività;
+                    do{
+                        dataAttività = prompt("                  > ");
+                        if(formattaData(dataAttività)===false)
+                        {
+                            console.log("\n                      ═══════════════════════");
+                            console.log("                      !!!VALORE NON VALIDO!!!");
+                            console.log("                      ═══════════════════════\n");
+                        }
+                    }while(formattaData(dataAttività)===false);
+                    dataAttività=formattaData(dataAttività);
+                    promemoria.modificaAttività(Array.from(risultati.values())[0][0].nomeAttività,null,dataAttività); 
                     console.log("\n            ═══════════════════════════════════════════");
                     console.log("            DATA DELL'ATTIVITÀ MODIFICATA CON SUCCESSO!");
                     console.log("            ═══════════════════════════════════════════\n");
@@ -367,12 +383,12 @@ function modificaAttività(promemoria) {
             }
             prompt("                  PREMERE INVIO PER CONTINUARE ...")
             console.clear();
-        } while (conferma !== 1 && conferma !== 2);
-    } else if(Array.from(risultati.keys()).length>1){ // Gestisce il caso in cui la ricerca ritorni più di un risultato
+        } while (conferma !== 1 && conferma !== 2&& conferma !== 3&& conferma !== 4);
+    } else if(Array.from(risultati.keys()).length>1&&Array.from(risultati.values()).length>1){ // Gestisce il caso in cui la ricerca ritorni più di un risultato
         console.log("\n════════════════════════════════════════════════════════════════════════════");
         console.log("!!!ATTENZIONE LA RICERCA HA AVUTO PIÙ RISULTATI, SPECIFICARE MAGGIORMENTE!!!")
         console.log("════════════════════════════════════════════════════════════════════════════\n");
-        visualizzaAttività(risultato); // Visualizza tutte le attività trovate
+        promemoria.stampaMappa(risultati); // Visualizza tutte le attività trovate
         prompt("\n                   PREMERE INVIO PER CONTINUARE ...");
         modificaAttività(vet); // Richiama la funzione per specificare meglio la ricerca
     }
@@ -393,15 +409,16 @@ function marcaturaAttività(promemoria) {
     console.log("       ║  /_/  /_/\\_,_/_/  \\__/\\_,_/\\__/\\_,_/_/  \\_,_/   ║");
     console.log("       ║                                                 ║");
     console.log("       ╚═════════════════════════════════════════════════╝");
-    let risultato = ricercaAttività(vet); // Effettua la ricerca dell'attività
-    if (risultato.length === 1) { // Controlla se è stata trovata esattamente una attività
+    let attività=prompt("              ATTIVITÀ > ");
+    let risultati = promemoria.ricercaAttività(attività.charAt(0).toUpperCase() + attività.slice(1).toLowerCase());
+    if (Array.from(risultati.keys()).length===1&&Array.from(risultati.values()).length===1) { // Controlla se è stata trovata esattamente una attività
         console.log("\n                     ══════════════════");
         console.log("                      ATTIVITÀ TROVATA ");
         console.log("                     ══════════════════\n");
-        visualizzaAttività(risultato); // Visualizza l'attività trovata
+        promemoria.stampaMappa(risultati); // Visualizza l'attività trovata
         prompt("\n                PREMERE INVIO PER CONTINUARE ...")
         console.clear();
-        if(risultato[0].marcaturaAttività===true){ // Controlla se l'attività è già marcata come completata
+        if(Array.from(risultati.values())[0][0].marcaturaAttività===true){ // Controlla se l'attività è già marcata come completata
             console.log("\n       ═════════════════════════════════════════════════════");
             console.log("       !!!ERRORE, NON PUOI MARCARE UN'ATTIVITÀ GIÀ SVOLTA!!!");
             console.log("       ═════════════════════════════════════════════════════\n");
@@ -419,7 +436,7 @@ function marcaturaAttività(promemoria) {
                 conferma = parseInt(prompt("                  > "));
                 switch (conferma) {
                     case 1: {
-                            risultato[0].marcaturaAttività=true; // Marca l'attività come completata           
+                            promemoria.marcaAttività(Array.from(risultati.values())[0][0].nomeAttività)
                             console.log("\n                  ═════════════════════════════");                     
                             console.log("                  ATTIVITÀ SEGNATA COME SVOLTA!");
                             console.log("                  ═════════════════════════════\n");
@@ -441,13 +458,12 @@ function marcaturaAttività(promemoria) {
                 prompt("                   PREMERE INVIO PER CONTINUARE ...");
                 console.clear();
             } while (conferma !== 1 && conferma !== 2);
-            salvaAttivitàSuFile(vet); // Salva le modifiche al file
         }
-    } else if(risultato.length>1){ // Gestisce il caso in cui la ricerca ritorni più di un risultato
+    } else if(Array.from(risultati.keys()).length>1&&Array.from(risultati.values()).length>1){ // Gestisce il caso in cui la ricerca ritorni più di un risultato
         console.log("\n════════════════════════════════════════════════════════════════════════════");
         console.log("!!!ATTENZIONE LA RICERCA HA AVUTO PIÙ RISULTATI, SPECIFICARE MAGGIORMENTE!!!");
         console.log("════════════════════════════════════════════════════════════════════════════\n");
-        visualizzaAttività(risultato); // Visualizza tutte le attività trovate
+        promemoria.stampaMappa(risultati);
         prompt("\n                  PREMERE INVIO PER CONTINUARE ...");
         marcaturaAttività(vet); // Richiama la funzione per specificare meglio la ricerca
     }
@@ -567,7 +583,8 @@ function menuVisualizzazione(promemoria) {
         console.log("\n                        ┌──────────────────────────────┐");
         console.log("                        │1: VISUALIZZA ELENCO ATTIVITÀ │");
         console.log("                        │2: RICERCA UN'ATTIVITÀ        │");
-        console.log("                        │3: INDIETRO                   │");
+        console.log("                        │3: NOTIFICHE                  │");
+        console.log("                        │4: INDIETRO                   │");
         console.log("                        └──────────────────────────────┘\n");
         scelta = parseInt(prompt("                         > "));
         switch (scelta) {
@@ -580,6 +597,10 @@ function menuVisualizzazione(promemoria) {
                 break;
             }
             case 3: {
+                //notifiche
+                break;
+            }
+            case 4: {
                 break;
             }
             default:
@@ -589,7 +610,7 @@ function menuVisualizzazione(promemoria) {
                 prompt("                         PREMERE INVIO PER CONTINUARE ...");
                 break;
         }
-    } while (scelta !== 3);
+    } while (scelta !== 4);
 }
 /**
  * @description Funzione main che gestisce il menu principale dell'applicazione.
@@ -614,7 +635,7 @@ function main() {
         console.log("                           │    SCEGLI COSA FARE     │");
         console.log("                           │1: GESTISCI ATTIVITÀ     │");
         console.log("                           │2: VISUALIZZA ATTIVITÀ   │");
-        console.log("                           │3: ESCI                  │");
+        console.log("                           │3: SALVA ED ESCI         │");
         console.log("                           └─────────────────────────┘\n");
         scelta = parseInt(prompt("                           > "));
         switch (scelta) {
