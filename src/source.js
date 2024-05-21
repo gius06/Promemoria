@@ -82,15 +82,13 @@ class Promemoria {
 
             if (risultati.length > 0) {
                 risultatiMappa.set(categoria, risultati);
-                this.stampaMappa(new Map([[categoria, risultati]]));
             }
         }
-        if(Array.from(risultati.keys()).length===0)
+        if(Array.from(risultatiMappa.keys()).length===0)
         {
                 console.log("\n              ════════════════════════════════════");
                 console.log("              !!!NESSUNA CORRISPONDENZA TROVATA!!!");
                 console.log("              ════════════════════════════════════\n");
-                prompt("                PREMERE INVIO PER CONTINUARE ...")
         }
         return risultatiMappa;
     }
@@ -130,25 +128,25 @@ class Promemoria {
     }
     stampaMappa(mappa) {
         for (const [categoria, attivitàList] of mappa.entries()) {
-            console.log(`\n          Categoria => ${categoria}`);
+            console.log(`\n               Categoria => ${categoria}`);
             if (attivitàList.length > 0) {
                 let c = 0;
                 // Visualizza attività non marcate
                 for (let i = 0; i < attivitàList.length; i++) {
                     if (!attivitàList[i].marcaturaAttività) {
                         c++;
-                        console.log(`              - ${c}. ${attivitàList[i].nomeAttività} (${attivitàList[i].dataAttività})`);
+                        console.log(`                   - ${c}. ${attivitàList[i].nomeAttività} (${attivitàList[i].dataAttività})`);
                     }
                 }
                 // Visualizza attività marcate
                 for (let k = 0; k < attivitàList.length; k++) {
                     if (attivitàList[k].marcaturaAttività) {
                         c++;
-                        console.log(`              - ${c}. \x1b[9m${attivitàList[k].nomeAttività} (${attivitàList[k].dataAttività})\x1b[0m`);
+                        console.log(`                   - ${c}. \x1b[9m${attivitàList[k].nomeAttività} (${attivitàList[k].dataAttività})\x1b[0m`);
                     }
                 }
             } else 
-                console.log('              Nessuna attività');
+                console.log('                   Nessuna attività');
         }
     }
 }
@@ -313,10 +311,11 @@ function modificaAttività(promemoria) {
     console.log("       ║     / /|_/ / / / / / / // // /_   / // /   / /| |   ║");      
     console.log("       ║    / /  / / /_/ / /_/ // // __/ _/ // /___/ ___ |   ║");      
     console.log("       ║   /_/  /_/\\____/_____/___/_/   /___/\\____/_/  |_|   ║");
-    console.log("       ║                                                     ║\n");
+    console.log("       ║                                                     ║");
+    console.log("       ╚═════════════════════════════════════════════════════╝\n");
     let attività=prompt("              ATTIVITÀ > ");
     let risultati = promemoria.ricercaAttività(attività.charAt(0).toUpperCase() + attività.slice(1).toLowerCase());
-    console.log("       ╚═════════════════════════════════════════════════════╝");
+    
     if (Array.from(risultati.keys()).length === 1) { // Controlla se è stata trovata esattamente una attività
         let conferma;
         do {
@@ -337,7 +336,7 @@ function modificaAttività(promemoria) {
                     console.log("\n                     ═══════════════════════");
                     console.log("                     INSERISCI IL NUOVO NOME");
                     console.log("                     ═══════════════════════");
-                    risultato[0].nomeAttività = prompt("                     > "); // Modifica il nome dell'attività
+                    risultati[0].nomeAttività = prompt("                     > "); // Modifica il nome dell'attività
                     salvaAttivitàSuFile(vet);
                     console.log("\n            ═══════════════════════════════════════════");
                     console.log("            NOME DELL'ATTIVITÀ MODIFICATO CON SUCCESSO!");
@@ -541,12 +540,10 @@ function trovaAttività(promemoria)
     console.log("              ║  /_/|_/_/\\__/\\__/_/  \\__/\\_,_/    ║");
     console.log("              ║                                   ║")
     console.log("              ╚═══════════════════════════════════╝");
-    let risultato=ricercaAttività(); // Chiama la funzione per cercare un'attività
-    console.log();
-    if(risultato.length>0){
-        visualizzaAttività(risultato);
-        prompt("\n                 PREMERE INVIO PER CONTINUARE ...")
-    }
+    let attività=prompt("              ATTIVITÀ > ");
+    let risultati = promemoria.ricercaAttività(attività.charAt(0).toUpperCase() + attività.slice(1).toLowerCase());
+    promemoria.stampaMappa(risultati);
+    prompt("\n                 PREMERE INVIO PER CONTINUARE ...")
 }
 /**
  * @description Questa funzione gestisce il menu di visualizzazione dell'applicazione. 
