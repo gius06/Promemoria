@@ -353,16 +353,16 @@ function modificaAttività(promemoria) {
                         dataAttività = prompt("                            > ");
                         if (formattaData(dataAttività) === false) {
                             testoValoreNonValido()
-                    console.log("\n                           ═══════════════════════════════");
-                    console.log("                           INSERISCI LA NUOVA DATA (D/M/Y)");
-                    console.log("                           ═══════════════════════════════");
+                            console.log("\n                           ═══════════════════════════════");
+                            console.log("                           INSERISCI LA NUOVA DATA (D/M/Y)");
+                            console.log("                           ═══════════════════════════════");
                         }
                     } while (formattaData(dataAttività) === false);
                     dataAttività = formattaData(dataAttività);
                     promemoria.modificaAttività(Array.from(risultati.values())[0][0].nomeAttività, null, dataAttività);
-                    console.log("\n                     ═══════════════════════════════════════════");
-                    console.log("                     DATA DELL'ATTIVITÀ MODIFICATA CON SUCCESSO!");
-                    console.log("                     ═══════════════════════════════════════════\n");
+                    console.log("\n                       ═══════════════════════════════════════════");
+                    console.log("                       DATA DELL'ATTIVITÀ MODIFICATA CON SUCCESSO!");
+                    console.log("                       ═══════════════════════════════════════════\n");
                     break;
                 }
                 case 3: {
@@ -385,9 +385,9 @@ function modificaAttività(promemoria) {
                         dataAttività = prompt("                           > ");
                         if (formattaData(dataAttività) === false) {
                             testoValoreNonValido()
-                    console.log("\n                           ═══════════════════════════════");
-                    console.log("                           INSERISCI LA NUOVA DATA (D/M/Y)");
-                    console.log("                           ═══════════════════════════════");           
+                            console.log("\n                           ═══════════════════════════════");
+                            console.log("                           INSERISCI LA NUOVA DATA (D/M/Y)");
+                            console.log("                           ═══════════════════════════════");
                         }
                     } while (formattaData(dataAttività) === false);
                     dataAttività = formattaData(dataAttività);
@@ -437,7 +437,7 @@ function marcaturaAttività(promemoria) {
     console.log("              ║   / /|_/ / _ `/ __/ __/ _ `/ __/ // / __/ _ `/  ║");
     console.log("              ║  /_/  /_/\\_,_/_/  \\__/\\_,_/\\__/\\_,_/_/  \\_,_/   ║");
     console.log("              ║                                                 ║");
-    console.log("              ╚═════════════════════════════════════════════════╝");
+    console.log("              ╚═════════════════════════════════════════════════╝\n");
     let attività = prompt("              ATTIVITÀ > ");
     let risultati = promemoria.ricercaAttività(attività.charAt(0).toUpperCase() + attività.slice(1).toLowerCase());
     if (Array.from(risultati.keys()).length === 1 && Array.from(risultati.values()).length === 1) { // Controlla se è stata trovata esattamente una attività
@@ -584,8 +584,10 @@ function trovaAttività(promemoria) {
     let attività = prompt("                     ATTIVITÀ > ");
     console.log("");
     let risultati = promemoria.ricercaAttività(attività.charAt(0).toUpperCase() + attività.slice(1).toLowerCase());
-    promemoria.stampaMappa(risultati);
-    prompt("\n                       PREMERE INVIO PER CONTINUARE ...")
+    if ((risultati.size != 0)) {
+        promemoria.stampaMappa(risultati);
+        prompt("\n                       PREMERE INVIO PER CONTINUARE ...")
+    }
 }
 
 function parseDate(dataAttività) {
@@ -603,33 +605,59 @@ function notificheAttività(promemoria) {
     console.log("              ║  /_/|_/\\___/\\__/_/_//_/\\__/_//_/\\__/    ║");
     console.log("              ║                                         ║")
     console.log("              ╚═════════════════════════════════════════╝\n");
+
+    let vuoto = true;
+    // per controllare se le categorie sono vuote
+    promemoria.mappa.forEach((attivitàList) => {
+        if (attivitàList.length > 0) {
+            vuoto = false;
+        }
+    });
+
+    if (vuoto) {
+        console.log("                   Nessuna notifica da visualizzare.");
+        prompt("\n                   PREMERE INVIO PER CONTINUARE ...");
+        return;
+    }
+
     // Prendo la data corrente
     const currentDate = new Date();
     // Imposto la data a mezzanotte per poi confrontarla
     currentDate.setHours(0, 0, 0, 0);
 
+    // vettori per memorizzare le attività utile per la stampa finale ordinata
+    const scadenzaOggi = [];
+    const inScadenza = [];
+    const scadute = [];
+    const completate = [];
+
     promemoria.mappa.forEach((attivitàList, key) => {
         attivitàList.forEach((attività) => {
-            //qui recupero la data e la converto nel formato DD/MM/YYYY
             const inputDate = parseDate(attività.dataAttività);
 
             if (isNaN(inputDate.getTime())) {
                 console.log(`La data per ${attività.nomeAttività} (${key}) non è valida.`);
             } else {
-                // Imposta l'ora della data di input a mezzanotte per confrontare euqualmente le date
+                // imposto anche qui la data a mezzanotter per il confronto equo
                 inputDate.setHours(0, 0, 0, 0);
                 if (attività.marcaturaAttività) {
-                    console.log(`\n         L'attività : \x1b[9m (${key}) ${attività.nomeAttività}\x1b[0m`, `è stata completata il ${attività.dataAttività}`);
+                    completate.push(`              l'attività : \x1b[9m (${key}) ${attività.nomeAttività}\x1b[0m è stata completata`);
                 } else if (inputDate.getTime() === currentDate.getTime()) {
-                    console.log(`\x1b[32m\n         L'attività (${key}) ${attività.nomeAttività} è in scadenza oggi.\x1b[0m`);
+                    scadenzaOggi.push(`\x1b[32m              L'attività : (${key}) ${attività.nomeAttività} è in scadenza oggi.\x1b[0m`);
                 } else if (inputDate.getTime() > currentDate.getTime()) {
-                    console.log(`\x1b[33m\n         L'attività(${key}) ${attività.nomeAttività} è in scadenza ${attività.dataAttività}.\x1b[0m`);
+                    inScadenza.push(`\x1b[33m              L'attività : (${key}) ${attività.nomeAttività} è in scadenza ${attività.dataAttività}.\x1b[0m`);
                 } else {
-                    console.log(`\x1b[31m\n         L'attività (${key}) ${attività.nomeAttività} è scaduta il ${attività.dataAttività}.\x1b[0m`);
+                    scadute.push(`\x1b[31m              L'attività : (${key}) ${attività.nomeAttività} è scaduta il ${attività.dataAttività}.\x1b[0m`);
                 }
             }
         });
     });
+    //stampo in ordine le attività
+    scadenzaOggi.forEach((msg) => console.log(msg));
+    inScadenza.forEach((msg) => console.log(msg));
+    scadute.forEach((msg) => console.log(msg));
+    completate.forEach((msg) => console.log(msg));
+
     prompt("\n                   PREMERE INVIO PER CONTINUARE ...");
 }
 /**
