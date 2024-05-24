@@ -142,7 +142,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="source.js.html">source.js</a>, <a href="source.js.html#line15">line 15</a>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line23">line 23</a>
     </li></ul></dd>
     
 
@@ -204,7 +204,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="source.js.html">source.js</a>, <a href="source.js.html#line11">line 11</a>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line19">line 19</a>
     </li></ul></dd>
     
 
@@ -232,7 +232,7 @@
     
 
     
-    <h4 class="name" id="aggiungiAttivit%C3%A0"><span class="type-signature"></span>aggiungiAttività<span class="signature">(vet)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="aggiungiAttivit%C3%A0"><span class="type-signature"></span>aggiungiAttività<span class="signature">(promemoria)</span><span class="type-signature"></span></h4>
     
 
     
@@ -240,7 +240,13 @@
 
 
 <div class="description">
-    <p>Questa funzione permette di aggiungere una nuova attività all'elenco.</p>
+    <p>Questa funzione gestisce l'interfaccia utente per aggiungere un'attività al promemoria.
+Mostra un'intestazione grafica e visualizza tutte le attività presenti nel promemoria.
+Richiede all'utente di inserire la categoria e il nome dell'attività.
+Verifica la validità della categoria e del nome inseriti.
+Chiede all'utente di inserire la data dell'attività utilizzando la funzione <code>formattaData</code>.
+Aggiunge l'attività al promemoria utilizzando il metodo <code>aggiungiAttività</code>.
+Se l'aggiunta è riuscita, mostra un messaggio di conferma, altrimenti mostra un messaggio di errore e richiede nuovamente l'inserimento.</p>
 </div>
 
 
@@ -276,13 +282,13 @@
 
         <tr>
             
-                <td class="name"><code>vet</code></td>
+                <td class="name"><code>promemoria</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Array</span>
+<span class="param-type"><a href="Promemoria.html">Promemoria</a></span>
 
 
             
@@ -292,7 +298,7 @@
 
             
 
-            <td class="description last"><p>Array di oggetti attività.</p></td>
+            <td class="description last"><p>L'istanza di Promemoria a cui aggiungere l'attività.</p></td>
         </tr>
 
     
@@ -333,7 +339,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="source.js.html">source.js</a>, <a href="source.js.html#line51">line 51</a>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line352">line 352</a>
     </li></ul></dd>
     
 
@@ -369,7 +375,7 @@
     
 
     
-    <h4 class="name" id="cancellaAttivit%C3%A0"><span class="type-signature"></span>cancellaAttività<span class="signature">(vet)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="cancellaAttivit%C3%A0"><span class="type-signature"></span>cancellaAttività<span class="signature">(promemoria)</span><span class="type-signature"></span></h4>
     
 
     
@@ -377,7 +383,14 @@
 
 
 <div class="description">
-    <p>Questa funzione permette di cercare e cancellare un'attività dall'elenco.</p>
+    <p>Questa funzione gestisce la cancellazione di un'attività dal promemoria.
+Inizia cancellando il contenuto della console per una visualizzazione pulita.
+Visualizza tutte le attività presenti nel promemoria.
+Richiede all'utente di inserire il nome dell'attività da cancellare.
+Esegue una ricerca delle attività corrispondenti al nome inserito dall'utente.
+Se vengono trovati risultati validi, chiede all'utente di confermare la cancellazione dell'attività selezionata.
+Se l'utente conferma, la funzione procede a eliminare l'attività dal promemoria.
+Al termine, mostra un messaggio di conferma o annullamento dell'operazione e richiede all'utente di premere INVIO per continuare.</p>
 </div>
 
 
@@ -413,13 +426,13 @@
 
         <tr>
             
-                <td class="name"><code>vet</code></td>
+                <td class="name"><code>promemoria</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Array</span>
+<span class="param-type"><a href="Promemoria.html">Promemoria</a></span>
 
 
             
@@ -429,7 +442,7 @@
 
             
 
-            <td class="description last"><p>Array di oggetti attività.</p></td>
+            <td class="description last"><p>L'istanza di Promemoria da cui cancellare l'attività.</p></td>
         </tr>
 
     
@@ -470,7 +483,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="source.js.html">source.js</a>, <a href="source.js.html#line74">line 74</a>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line487">line 487</a>
     </li></ul></dd>
     
 
@@ -506,7 +519,7 @@
     
 
     
-    <h4 class="name" id="elencoAttivit%C3%A0"><span class="type-signature"></span>elencoAttività<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="elencoAttivit%C3%A0"><span class="type-signature"></span>elencoAttività<span class="signature">(promemoria)</span><span class="type-signature"></span></h4>
     
 
     
@@ -514,8 +527,151 @@
 
 
 <div class="description">
-    <p>Stampa se ci sono attività nel file l'elenco delle attività richiamando
-la funzione 'visualizzaAttività(vet)'</p>
+    <p>Questa funzione visualizza l'elenco di tutte le attività presenti nel promemoria.
+La funzione accetta un array contenente le attività del promemoria come parametro.
+La funzione <code>elencoAttività</code> pulisce la console per una visualizzazione più pulita e quindi mostra l'elenco di tutte le attività presenti nel promemoria utilizzando console.log.
+Visualizza un titolo dell'elenco attività e poi chiama il metodo &quot;visualizzaTutte&quot; sull'oggetto promemoria per visualizzare tutte le attività.
+Infine, richiede all'utente di premere INVIO per continuare.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>promemoria</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Un array contenente le attività del promemoria.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line844">line 844</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="formattaData"><span class="type-signature"></span>formattaData<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Questa funzione richiede all'utente di inserire una data nel formato &quot;D/M/YY&quot; tramite prompt.
+Verifica la validità della data inserita, inclusi giorno, mese e anno.
+Se la data è valida, la formatta nel formato richiesto e la restituisce.
+Se la data inserita non è valida, mostra un messaggio di avviso e richiede nuovamente l'inserimento.</p>
 </div>
 
 
@@ -559,96 +715,7 @@ la funzione 'visualizzaAttività(vet)'</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="source.js.html">source.js</a>, <a href="source.js.html#line401">line 401</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="leggiAttivit%C3%A0DaFile"><span class="type-signature"></span>leggiAttivitàDaFile<span class="signature">()</span><span class="type-signature"> &rarr; {Array}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Questa funzione legge un file JSON contenente attività e le restituisce come array di oggetti.
-Se si verifica un errore durante la lettura del file, restituisce un array vuoto.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="source.js.html">source.js</a>, <a href="source.js.html#line136">line 136</a>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line295">line 295</a>
     </li></ul></dd>
     
 
@@ -677,9 +744,7 @@ Se si verifica un errore durante la lettura del file, restituisce un array vuoto
 
         
 <div class="param-desc">
-    <ul>
-<li>Array di oggetti attività.</li>
-</ul>
+    <p>La data formattata nel formato &quot;D/M/YY&quot;.</p>
 </div>
 
 
@@ -690,7 +755,7 @@ Se si verifica un errore durante la lettura del file, restituisce un array vuoto
     </dt>
     <dd>
         
-<span class="param-type">Array</span>
+<span class="param-type">string</span>
 
 
     </dd>
@@ -708,7 +773,7 @@ Se si verifica un errore durante la lettura del file, restituisce un array vuoto
     
 
     
-    <h4 class="name" id="main"><span class="type-signature"></span>main<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="leggiAttivit%C3%A0DaFile"><span class="type-signature"></span>leggiAttivitàDaFile<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Promemoria.html">Promemoria</a>}</span></h4>
     
 
     
@@ -716,10 +781,9 @@ Se si verifica un errore durante la lettura del file, restituisce un array vuoto
 
 
 <div class="description">
-    <p>Funzione main che gestisce il menu principale dell'applicazione.
-Mostra un menu con tre opzioni: gestire le attività, visualizzare le attività, o uscire dall'applicazione.
-L'utente può selezionare un'opzione inserendo il numero corrispondente.
-La funzione utilizza un ciclo do-while per mantenere il menu attivo fino a quando l'utente sceglie di uscire.</p>
+    <p>Legge le attività da un file JSON e restituisce un'istanza di Promemoria.
+Questa funzione legge le attività salvate in formato JSON da un file &quot;src/promemoria.json&quot;.
+Se il file non esiste o se si verifica un errore durante la lettura, viene restituita una nuova istanza di Promemoria vuota.</p>
 </div>
 
 
@@ -763,7 +827,120 @@ La funzione utilizza un ciclo do-while per mantenere il menu attivo fino a quand
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="source.js.html">source.js</a>, <a href="source.js.html#line493">line 493</a>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line273">line 273</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Un'istanza di Promemoria contenente le attività lette dal file, o una nuova istanza vuota se non è possibile leggere il file.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Promemoria.html">Promemoria</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="main"><span class="type-signature"></span>main<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>La funzione 'main' mostra un menu all'utente attraverso la console, consentendo loro di scegliere tra diverse opzioni
+per gestire e visualizzare le attività del promemoria. Il menu viene visualizzato finché l'utente sceglie di salvare ed uscire dal programma.
+All'interno del menu principale, vengono chiamate le funzioni <code>menuModifica</code>, <code>menuVisualizzazione</code> e <code>salvaAttivitàSuFile</code>
+per gestire le operazioni di gestione, visualizzazione e salvataggio delle attività rispettivamente.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line1063">line 1063</a>
     </li></ul></dd>
     
 
@@ -799,7 +976,7 @@ La funzione utilizza un ciclo do-while per mantenere il menu attivo fino a quand
     
 
     
-    <h4 class="name" id="marcaturaAttivit%C3%A0"><span class="type-signature"></span>marcaturaAttività<span class="signature">(vet)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="marcaturaAttivit%C3%A0"><span class="type-signature"></span>marcaturaAttività<span class="signature">(vet, promemoria)</span><span class="type-signature"></span></h4>
     
 
     
@@ -866,6 +1043,29 @@ La funzione aggiorna il file delle attività se l'operazione di marcatura è com
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>promemoria</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Promemoria.html">Promemoria</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>L'istanza del promemoria in cui si trova l'attività da segnare.</p></td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -903,7 +1103,7 @@ La funzione aggiorna il file delle attività se l'operazione di marcatura è com
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="source.js.html">source.js</a>, <a href="source.js.html#line245">line 245</a>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line697">line 697</a>
     </li></ul></dd>
     
 
@@ -939,7 +1139,7 @@ La funzione aggiorna il file delle attività se l'operazione di marcatura è com
     
 
     
-    <h4 class="name" id="menuModifica"><span class="type-signature"></span>menuModifica<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="menuModifica"><span class="type-signature"></span>menuModifica<span class="signature">(promemoria)</span><span class="type-signature"></span></h4>
     
 
     
@@ -947,10 +1147,11 @@ La funzione aggiorna il file delle attività se l'operazione di marcatura è com
 
 
 <div class="description">
-    <p>Questa funzione gestisce il menu di modifica dell'applicazione.
-Mostra un sottomenu con opzioni per aggiungere, cancellare, modificare o marcare le attività.
-L'utente può selezionare un'opzione inserendo il numero corrispondente. Utilizza un ciclo
-do-while per mantenere il sottomenu attivo fino a quando l'utente sceglie di tornare indietro.</p>
+    <p>La funzione <code>menuModifica</code> mostra un menu all'utente attraverso la console, dove possono selezionare diverse opzioni
+per modificare le attività del promemoria. Dopo ogni interazione con l'utente, la funzione chiama le funzioni appropriate
+per eseguire l'azione richiesta, come aggiungere, cancellare, modificare o marcare un'attività. Il menu viene visualizzato
+finché l'utente sceglie di tornare indietro al menu principale. Se l'utente inserisce un'opzione non valida, viene mostrato
+un messaggio di errore e l'utente viene invitato a premere INVIO per continuare.</p>
 </div>
 
 
@@ -959,6 +1160,55 @@ do-while per mantenere il sottomenu attivo fino a quando l'utente sceglie di tor
 
 
 
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>promemoria</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Un array contenente le attività del promemoria.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -994,7 +1244,7 @@ do-while per mantenere il sottomenu attivo fino a quando l'utente sceglie di tor
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="source.js.html">source.js</a>, <a href="source.js.html#line319">line 319</a>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line772">line 772</a>
     </li></ul></dd>
     
 
@@ -1030,7 +1280,7 @@ do-while per mantenere il sottomenu attivo fino a quando l'utente sceglie di tor
     
 
     
-    <h4 class="name" id="menuVisualizzazione"><span class="type-signature"></span>menuVisualizzazione<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="menuVisualizzazione"><span class="type-signature"></span>menuVisualizzazione<span class="signature">(promemoria)</span><span class="type-signature"></span></h4>
     
 
     
@@ -1038,11 +1288,11 @@ do-while per mantenere il sottomenu attivo fino a quando l'utente sceglie di tor
 
 
 <div class="description">
-    <p>Questa funzione gestisce il menu di visualizzazione dell'applicazione.
-Mostra un sottomenu con opzioni per visualizzare l'elenco delle attività,
-cercare un'attività specifica, o tornare indietro al menu principale.
-Utilizza un ciclo do-while per mantenere il sottomenu attivo fino a quando
-l'utente sceglie di tornare indietro.</p>
+    <p>Questa funzione gestisce il menu di visualizzazione delle attività del promemoria.
+La funzione accetta un array contenente le attività del promemoria come parametro.
+La funzione <code>menuVisualizzazione</code> mostra un menu all'utente attraverso la console,
+consentendo loro di selezionare diverse opzioni per visualizzare le attività del promemoria.
+Il menu viene visualizzato finché l'utente non sceglie di tornare indietro al menu principale.</p>
 </div>
 
 
@@ -1051,6 +1301,55 @@ l'utente sceglie di tornare indietro.</p>
 
 
 
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>promemoria</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Un array contenente le attività del promemoria.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -1086,7 +1385,7 @@ l'utente sceglie di tornare indietro.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="source.js.html">source.js</a>, <a href="source.js.html#line448">line 448</a>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line1002">line 1002</a>
     </li></ul></dd>
     
 
@@ -1122,7 +1421,7 @@ l'utente sceglie di tornare indietro.</p>
     
 
     
-    <h4 class="name" id="modificaAttivit%C3%A0"><span class="type-signature"></span>modificaAttività<span class="signature">(vet)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="modificaAttivit%C3%A0"><span class="type-signature"></span>modificaAttività<span class="signature">(vet, promemoria)</span><span class="type-signature"></span></h4>
     
 
     
@@ -1188,131 +1487,16 @@ Le modifiche vengono salvate nel file delle attività.</p>
         </tr>
 
     
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="source.js.html">source.js</a>, <a href="source.js.html#line177">line 177</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="ricercaAttivit%C3%A0"><span class="type-signature"></span>ricercaAttività<span class="signature">(vet)</span><span class="type-signature"> &rarr; {Array}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Questa funzione permette di cercare attività all'interno dell'array delle attività (vet)
-in base a parole chiave inserite dall'utente. Restituisce un array di attività che corrispondono alla ricerca.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
 
         <tr>
             
-                <td class="name"><code>vet</code></td>
+                <td class="name"><code>promemoria</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Array</span>
+<span class="param-type"><a href="Promemoria.html">Promemoria</a></span>
 
 
             
@@ -1322,7 +1506,7 @@ in base a parole chiave inserite dall'utente. Restituisce un array di attività 
 
             
 
-            <td class="description last"><p>Array di oggetti attività.</p></td>
+            <td class="description last"><p>L'oggetto promemoria contenente le attività.</p></td>
         </tr>
 
     
@@ -1363,7 +1547,296 @@ in base a parole chiave inserite dall'utente. Restituisce un array di attività 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="source.js.html">source.js</a>, <a href="source.js.html#line150">line 150</a>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line561">line 561</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="notificheAttivit%C3%A0"><span class="type-signature"></span>notificheAttività<span class="signature">(promemoria)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Questa funzione gestisce la visualizzazione delle notifiche relative alle attività del promemoria.
+Le notifiche vengono generate in base alla data delle attività e al loro stato di completamento.
+Le notifiche vengono visualizzate utilizzando console.log con colori per differenziare i diversi tipi di notifiche.
+La funzione mostra le seguenti categorie di notifiche:</p>
+<ul>
+<li>Attività in scadenza oggi, evidenziate in giallo.</li>
+<li>Attività in scadenza, evidenziate in verde.</li>
+<li>Attività scadute, evidenziate in rosso.</li>
+<li>Attività completate, evidenziate in rosso con il testo barrato.
+Se non ci sono attività nel promemoria, viene mostrato un messaggio indicando l'assenza di notifiche.
+La funzione accetta un array contenente le attività del promemoria e le elabora per generare le notifiche.
+Successivamente, le notifiche vengono stampate a schermo in ordine di priorità.</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>promemoria</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Un array contenente le attività del promemoria.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line918">line 918</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="parseDate"><span class="type-signature"></span>parseDate<span class="signature">(dataAttività)</span><span class="type-signature"> &rarr; {Date}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>La funzione <code>parseDate</code> accetta una stringa nel formato &quot;gg/mm/yyyy&quot; e restituisce un oggetto Data JavaScript corrispondente.
+Viene divisa la stringa della data in giorno, mese e anno utilizzando il carattere &quot;/&quot;.
+Quindi viene creato e restituito un nuovo oggetto Data JavaScript utilizzando i valori ottenuti dalla stringa.
+È importante notare che si sottrae 1 dal mese poiché JavaScript rappresenta i mesi da 0 a 11.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>dataAttività</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Una stringa che rappresenta la data nel formato &quot;gg/mm/yyyy&quot;.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line897">line 897</a>
     </li></ul></dd>
     
 
@@ -1393,7 +1866,7 @@ in base a parole chiave inserite dall'utente. Restituisce un array di attività 
         
 <div class="param-desc">
     <ul>
-<li>Array di attività che corrispondono ai criteri di ricerca.</li>
+<li>Un oggetto Data JavaScript che rappresenta la data specificata dalla stringa.</li>
 </ul>
 </div>
 
@@ -1405,7 +1878,7 @@ in base a parole chiave inserite dall'utente. Restituisce un array di attività 
     </dt>
     <dd>
         
-<span class="param-type">Array</span>
+<span class="param-type">Date</span>
 
 
     </dd>
@@ -1431,9 +1904,10 @@ in base a parole chiave inserite dall'utente. Restituisce un array di attività 
 
 
 <div class="description">
-    <p>Questa funzione prende un array di oggetti attività e lo converte in una stringa JSON.
-Successivamente, scrive questa stringa in un file chiamato &quot;promemoria.json&quot; nella cartella &quot;src&quot;.
-Se il file non esiste, viene creato. Se esiste già, viene sovrascritto.</p>
+    <p>Salva le attività su un file JSON.
+Questa funzione prende un'istanza di Promemoria e salva le sue attività su un file JSON.
+La funzione utilizza la sincronizzazione del filesystem per scrivere direttamente sul file senza aspettare.
+Se il file &quot;src/promemoria.json&quot; esiste già, verrà sovrascritto con le nuove attività.</p>
 </div>
 
 
@@ -1475,7 +1949,7 @@ Se il file non esiste, viene creato. Se esiste già, viene sovrascritto.</p>
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;<a href="Attivit%C3%A0.html">Attività</a>></span>
+<span class="param-type"><a href="Promemoria.html">Promemoria</a></span>
 
 
             
@@ -1485,7 +1959,7 @@ Se il file non esiste, viene creato. Se esiste già, viene sovrascritto.</p>
 
             
 
-            <td class="description last"><p>L'array di oggetti Attività da salvare.</p></td>
+            <td class="description last"><p>L'istanza di Promemoria contenente le attività da salvare.</p></td>
         </tr>
 
     
@@ -1526,7 +2000,7 @@ Se il file non esiste, viene creato. Se esiste già, viene sovrascritto.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="source.js.html">source.js</a>, <a href="source.js.html#line44">line 44</a>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line262">line 262</a>
     </li></ul></dd>
     
 
@@ -1562,7 +2036,7 @@ Se il file non esiste, viene creato. Se esiste già, viene sovrascritto.</p>
     
 
     
-    <h4 class="name" id="trovaAttivit%C3%A0"><span class="type-signature"></span>trovaAttività<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="selezionaAttivit%C3%A0NeiRisultati"><span class="type-signature"></span>selezionaAttivitàNeiRisultati<span class="signature">(promemoria, risultati, attività)</span><span class="type-signature"> &rarr; {<a href="Attivit%25C3%25A0.html">Attività</a>|null}</span></h4>
     
 
     
@@ -1570,97 +2044,11 @@ Se il file non esiste, viene creato. Se esiste già, viene sovrascritto.</p>
 
 
 <div class="description">
-    <p>Stampa decorativa della parola ricerca e ricerca attività nel file json</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="source.js.html">source.js</a>, <a href="source.js.html#line424">line 424</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="visualizzaAttivit%C3%A0"><span class="type-signature"></span>visualizzaAttività<span class="signature">(vet)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Questa funzione visualizza l'elenco delle attività fornite in un array.
-Le attività non completate vengono mostrate normalmente, mentre le attività completate
-sono visualizzate con un effetto di testo barrato.</p>
+    <p>Questa funzione gestisce la selezione di un'attività dai risultati di una ricerca nel promemoria.
+Verifica se l'array di attività restituito come risultato della ricerca contiene almeno un elemento.
+Se è presente esattamente una sola attività nei risultati, crea e restituisce un'istanza di Attività con i dettagli dell'attività trovata.
+Se ci sono più risultati, richiede all'utente di specificare la data per selezionare un'attività specifica.
+Restituisce null se non è stata trovata alcuna attività nei risultati o se l'input dell'utente non è valido.</p>
 </div>
 
 
@@ -1696,13 +2084,13 @@ sono visualizzate con un effetto di testo barrato.</p>
 
         <tr>
             
-                <td class="name"><code>vet</code></td>
+                <td class="name"><code>promemoria</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Array</span>
+<span class="param-type"><a href="Promemoria.html">Promemoria</a></span>
 
 
             
@@ -1712,7 +2100,53 @@ sono visualizzate con un effetto di testo barrato.</p>
 
             
 
-            <td class="description last"><p>Array di oggetti attività, ciascuno con proprietà <code>nomeAttività</code> e <code>marcaturaAttività</code>.</p></td>
+            <td class="description last"><p>L'istanza di Promemoria su cui è stata eseguita la ricerca.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>risultati</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Map</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Una mappa contenente i risultati della ricerca, con le categorie come chiavi e un array di attività come valori.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>attività</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Un array contenente le attività corrispondenti alla ricerca dell'utente.</p></td>
         </tr>
 
     
@@ -1753,7 +2187,259 @@ sono visualizzate con un effetto di testo barrato.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="source.js.html">source.js</a>, <a href="source.js.html#line378">line 378</a>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line418">line 418</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Un'istanza di Attività con i dettagli dell'attività selezionata, se esiste una sola attività nei risultati o se l'utente ha selezionato un'attività specifica tramite la data.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Attivit%25C3%25A0.html">Attività</a></span>
+|
+
+<span class="param-type">null</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="testoValoreNonValido"><span class="type-signature"></span>testoValoreNonValido<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Questa funzione stampa un messaggio di avviso a console quando un valore non valido viene inserito.
+Il messaggio di avviso è formattato per rendere il tutto più pulito.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line250">line 250</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="trovaAttivit%C3%A0"><span class="type-signature"></span>trovaAttività<span class="signature">(promemoria)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>La funzione <code>trovaAttività</code> permette all'utente di inserire una stringa di ricerca per cercare un'attività nel promemoria.
+Una volta eseguita la ricerca, i risultati vengono visualizzati utilizzando console.log.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>promemoria</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Un array contenente le attività del promemoria.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line864">line 864</a>
     </li></ul></dd>
     
 
@@ -1799,13 +2485,13 @@ sono visualizzate con un effetto di testo barrato.</p>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Attivit%25C3%25A0.html">Attività</a></li></ul><h3>Global</h3><ul><li><a href="global.html#aggiungiAttivit%25C3%25A0">aggiungiAttività</a></li><li><a href="global.html#cancellaAttivit%25C3%25A0">cancellaAttività</a></li><li><a href="global.html#elencoAttivit%25C3%25A0">elencoAttività</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#leggiAttivit%25C3%25A0DaFile">leggiAttivitàDaFile</a></li><li><a href="global.html#main">main</a></li><li><a href="global.html#marcaturaAttivit%25C3%25A0">marcaturaAttività</a></li><li><a href="global.html#menuModifica">menuModifica</a></li><li><a href="global.html#menuVisualizzazione">menuVisualizzazione</a></li><li><a href="global.html#modificaAttivit%25C3%25A0">modificaAttività</a></li><li><a href="global.html#prompt">prompt</a></li><li><a href="global.html#ricercaAttivit%25C3%25A0">ricercaAttività</a></li><li><a href="global.html#salvaAttivit%25C3%25A0SuFile">salvaAttivitàSuFile</a></li><li><a href="global.html#trovaAttivit%25C3%25A0">trovaAttività</a></li><li><a href="global.html#visualizzaAttivit%25C3%25A0">visualizzaAttività</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Attivit%25C3%25A0.html">Attività</a></li><li><a href="Promemoria.html">Promemoria</a></li></ul><h3>Global</h3><ul><li><a href="global.html#aggiungiAttivit%25C3%25A0">aggiungiAttività</a></li><li><a href="global.html#cancellaAttivit%25C3%25A0">cancellaAttività</a></li><li><a href="global.html#elencoAttivit%25C3%25A0">elencoAttività</a></li><li><a href="global.html#formattaData">formattaData</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#leggiAttivit%25C3%25A0DaFile">leggiAttivitàDaFile</a></li><li><a href="global.html#main">main</a></li><li><a href="global.html#marcaturaAttivit%25C3%25A0">marcaturaAttività</a></li><li><a href="global.html#menuModifica">menuModifica</a></li><li><a href="global.html#menuVisualizzazione">menuVisualizzazione</a></li><li><a href="global.html#modificaAttivit%25C3%25A0">modificaAttività</a></li><li><a href="global.html#notificheAttivit%25C3%25A0">notificheAttività</a></li><li><a href="global.html#parseDate">parseDate</a></li><li><a href="global.html#prompt">prompt</a></li><li><a href="global.html#salvaAttivit%25C3%25A0SuFile">salvaAttivitàSuFile</a></li><li><a href="global.html#selezionaAttivit%25C3%25A0NeiRisultati">selezionaAttivitàNeiRisultati</a></li><li><a href="global.html#testoValoreNonValido">testoValoreNonValido</a></li><li><a href="global.html#trovaAttivit%25C3%25A0">trovaAttività</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed May 15 2024 18:29:29 GMT+0200 (Ora legale dell’Europa centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Fri May 24 2024 19:05:26 GMT+0200 (Ora legale dell’Europa centrale)
 </footer>
 
 <script> prettyPrint(); </script>

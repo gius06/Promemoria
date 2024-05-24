@@ -63,10 +63,20 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>Sistema di gestione delle attività per creare, modificare, eliminare e cercare attività.
-Questo è un semplice programma di gestione delle attività che consente agli utenti di creare, eliminare, modificare e cercare attività.
-Ogni attività può essere contrassegnata come completata. Le attività sono archiviate in un file JSON denominato &quot;promemoria.json&quot; nella directory &quot;src&quot;.
-Il programma prevede un sistema di menu basato su testo per interagire con le attività.</p></div>
+            <div class="description"><p>Questo programma è una rubrica virtuale che consente agli utenti di gestire le proprie attività.
+La rubrica consente di aggiungere, eliminare, modificare e visualizzare attività suddivise in categorie come &quot;Lavoro&quot;, &quot;Personale&quot;, e &quot;Hobby&quot;.
+Il programma è costituito da diverse funzioni, ognuna delle quali svolge un compito specifico:</p>
+<ul>
+<li>Le funzioni come <code>aggiungiAttività()</code> e <code>eliminaAttività()</code> gestiscono l'aggiunta e l'eliminazione delle attività dalla rubrica.</li>
+<li>La funzione <code>modificaAttività()</code> permette agli utenti di modificare le informazioni di un'attività esistente.</li>
+<li><code>elencoAttività()</code> e <code>trovaAttività()</code> consentono agli utenti di visualizzare l'elenco completo delle attività o di cercarne una specifica.</li>
+<li><code>notificheAttività()</code> fornisce notifiche sull'attività in base alla loro scadenza.
+Il programma utilizza una mappa per organizzare le attività per categoria. Ogni categoria contiene un elenco di attività associate ad essa.
+Le operazioni di ricerca e modifica vengono eseguite iterando attraverso le categorie e le attività all'interno di esse.
+Le funzioni interagiscono con l'utente attraverso l'input da console e mostrano i risultati attraverso la console.
+Il programma offre anche una visualizzazione dettagliata e colorata per una migliore esperienza utente, ad esempio usando colori diversi per le attività scadute, in scadenza e completate.
+Complessivamente, questo programma offre agli utenti un modo intuitivo e completo per gestire le proprie attività quotidiane in modo organizzato e efficiente.</li>
+</ul></div>
         
 
         
@@ -153,13 +163,13 @@ Il programma prevede un sistema di menu basato su testo per interagire con le at
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Attivit%25C3%25A0.html">Attività</a></li></ul><h3>Global</h3><ul><li><a href="global.html#aggiungiAttivit%25C3%25A0">aggiungiAttività</a></li><li><a href="global.html#cancellaAttivit%25C3%25A0">cancellaAttività</a></li><li><a href="global.html#elencoAttivit%25C3%25A0">elencoAttività</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#leggiAttivit%25C3%25A0DaFile">leggiAttivitàDaFile</a></li><li><a href="global.html#main">main</a></li><li><a href="global.html#marcaturaAttivit%25C3%25A0">marcaturaAttività</a></li><li><a href="global.html#menuModifica">menuModifica</a></li><li><a href="global.html#menuVisualizzazione">menuVisualizzazione</a></li><li><a href="global.html#modificaAttivit%25C3%25A0">modificaAttività</a></li><li><a href="global.html#prompt">prompt</a></li><li><a href="global.html#ricercaAttivit%25C3%25A0">ricercaAttività</a></li><li><a href="global.html#salvaAttivit%25C3%25A0SuFile">salvaAttivitàSuFile</a></li><li><a href="global.html#trovaAttivit%25C3%25A0">trovaAttività</a></li><li><a href="global.html#visualizzaAttivit%25C3%25A0">visualizzaAttività</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Attivit%25C3%25A0.html">Attività</a></li><li><a href="Promemoria.html">Promemoria</a></li></ul><h3>Global</h3><ul><li><a href="global.html#aggiungiAttivit%25C3%25A0">aggiungiAttività</a></li><li><a href="global.html#cancellaAttivit%25C3%25A0">cancellaAttività</a></li><li><a href="global.html#elencoAttivit%25C3%25A0">elencoAttività</a></li><li><a href="global.html#formattaData">formattaData</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#leggiAttivit%25C3%25A0DaFile">leggiAttivitàDaFile</a></li><li><a href="global.html#main">main</a></li><li><a href="global.html#marcaturaAttivit%25C3%25A0">marcaturaAttività</a></li><li><a href="global.html#menuModifica">menuModifica</a></li><li><a href="global.html#menuVisualizzazione">menuVisualizzazione</a></li><li><a href="global.html#modificaAttivit%25C3%25A0">modificaAttività</a></li><li><a href="global.html#notificheAttivit%25C3%25A0">notificheAttività</a></li><li><a href="global.html#parseDate">parseDate</a></li><li><a href="global.html#prompt">prompt</a></li><li><a href="global.html#salvaAttivit%25C3%25A0SuFile">salvaAttivitàSuFile</a></li><li><a href="global.html#selezionaAttivit%25C3%25A0NeiRisultati">selezionaAttivitàNeiRisultati</a></li><li><a href="global.html#testoValoreNonValido">testoValoreNonValido</a></li><li><a href="global.html#trovaAttivit%25C3%25A0">trovaAttività</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed May 15 2024 18:29:29 GMT+0200 (Ora legale dell’Europa centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Fri May 24 2024 19:05:26 GMT+0200 (Ora legale dell’Europa centrale)
 </footer>
 
 <script> prettyPrint(); </script>
