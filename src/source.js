@@ -438,15 +438,31 @@ function selezionaAttivitàNeiRisultati(promemoria,risultati, attività) {
             // Visualizza i risultati della ricerca.
             promemoria.stampaMappa(risultati);
             let dataAttività;
-            let categoria;
+            let categoria,controlloDoppioni=false;
             // Ciclo per richiedere all'utente di specificare la data dell'attività.
             do {
                 // Richiede all'utente di inserire la data dell'attività utilizzando la funzione formattaData.
                 dataAttività = formattaData();
                 // Trova la categoria corrispondente alla data inserita dall'utente.
                 categoria = Array.from(risultati).find(([key, value]) => {
-                    return value.some(activity => activity.dataAttività === dataAttività);
+                    let x = value.some(activity => {
+                        if (activity.dataAttività === dataAttività) {
+                            if(attività.length !== activity.nomeAttività.length)
+                                controlloDoppioni=true;
+                            return true; // Trova una corrispondenza
+                        }
+                        return false; // Nessuna corrispondenza
+                    });
+                    return x;
                 });
+                if (controlloDoppioni)
+                    {
+                        console.log("\n═══════════════════════════════════════════════════════════════════════════════════════════");
+                        console.log("!!!CHIAVE DI RICERCA POCO PRECISA, IMPOSSIBILE SELEZIONARE ATTIVITÀ A CAUSA DI AMBIGUITÀ!!!");
+                        console.log("═══════════════════════════════════════════════════════════════════════════════════════════\n");
+                        prompt("                             PREMERE INVIO PER CONTINUARE ...");
+                        return null;
+                    }
                 if (!categoria) 
                     // Se la categoria non è stata trovata, mostra un messaggio di valore non valido.
                     testoValoreNonValido();
