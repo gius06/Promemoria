@@ -339,7 +339,7 @@ Se l'aggiunta è riuscita, mostra un messaggio di conferma, altrimenti mostra un
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="source.js.html">source.js</a>, <a href="source.js.html#line352">line 352</a>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line355">line 355</a>
     </li></ul></dd>
     
 
@@ -483,7 +483,7 @@ Al termine, mostra un messaggio di conferma o annullamento dell'operazione e ric
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="source.js.html">source.js</a>, <a href="source.js.html#line487">line 487</a>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line490">line 490</a>
     </li></ul></dd>
     
 
@@ -624,7 +624,7 @@ Infine, richiede all'utente di premere INVIO per continuare.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="source.js.html">source.js</a>, <a href="source.js.html#line844">line 844</a>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line843">line 843</a>
     </li></ul></dd>
     
 
@@ -715,7 +715,7 @@ Se la data inserita non è valida, mostra un messaggio di avviso e richiede nuov
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="source.js.html">source.js</a>, <a href="source.js.html#line295">line 295</a>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line298">line 298</a>
     </li></ul></dd>
     
 
@@ -827,7 +827,7 @@ Se il file non esiste o se si verifica un errore durante la lettura, viene resti
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="source.js.html">source.js</a>, <a href="source.js.html#line273">line 273</a>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line276">line 276</a>
     </li></ul></dd>
     
 
@@ -940,7 +940,7 @@ per gestire le operazioni di gestione, visualizzazione e salvataggio delle attiv
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="source.js.html">source.js</a>, <a href="source.js.html#line1063">line 1063</a>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line1062">line 1062</a>
     </li></ul></dd>
     
 
@@ -1103,7 +1103,7 @@ La funzione aggiorna il file delle attività se l'operazione di marcatura è com
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="source.js.html">source.js</a>, <a href="source.js.html#line697">line 697</a>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line696">line 696</a>
     </li></ul></dd>
     
 
@@ -1244,7 +1244,7 @@ un messaggio di errore e l'utente viene invitato a premere INVIO per continuare.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="source.js.html">source.js</a>, <a href="source.js.html#line772">line 772</a>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line771">line 771</a>
     </li></ul></dd>
     
 
@@ -1385,7 +1385,7 @@ Il menu viene visualizzato finché l'utente non sceglie di tornare indietro al m
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="source.js.html">source.js</a>, <a href="source.js.html#line1002">line 1002</a>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line1001">line 1001</a>
     </li></ul></dd>
     
 
@@ -1421,7 +1421,7 @@ Il menu viene visualizzato finché l'utente non sceglie di tornare indietro al m
     
 
     
-    <h4 class="name" id="modificaAttivit%C3%A0"><span class="type-signature"></span>modificaAttività<span class="signature">(vet, promemoria)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="modificaAttivit%C3%A0"><span class="type-signature"></span>modificaAttività<span class="signature">(promemoria)</span><span class="type-signature"></span></h4>
     
 
     
@@ -1429,9 +1429,17 @@ Il menu viene visualizzato finché l'utente non sceglie di tornare indietro al m
 
 
 <div class="description">
-    <p>Questa funzione permette di modificare il nome di un'attività specifica cercata dall'utente.
-L'utente può cercare un'attività, confermare la modifica e inserire un nuovo nome per l'attività.
-Le modifiche vengono salvate nel file delle attività.</p>
+    <p>Questo metodo consente di modificare il nome e/o la data di un'attività esistente all'interno del promemoria.
+L'utente può scegliere di modificare solo il nome, solo la data, entrambi o annullare l'operazione.
+Il processo di modifica è suddiviso in diverse fasi:</p>
+<ol>
+<li>Visualizzazione di tutte le attività presenti.</li>
+<li>Richiesta del nome dell'attività da modificare.</li>
+<li>Ricerca dell'attività inserita.</li>
+<li>Selezione dell'attività corretta se ci sono più risultati.</li>
+<li>Richiesta dell'operazione di modifica (nome, data o entrambi).</li>
+<li>Modifica dell'attività.</li>
+</ol>
 </div>
 
 
@@ -1467,36 +1475,13 @@ Le modifiche vengono salvate nel file delle attività.</p>
 
         <tr>
             
-                <td class="name"><code>vet</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Array di oggetti attività.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
                 <td class="name"><code>promemoria</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="Promemoria.html">Promemoria</a></span>
+<span class="param-type">Object</span>
 
 
             
@@ -1506,7 +1491,7 @@ Le modifiche vengono salvate nel file delle attività.</p>
 
             
 
-            <td class="description last"><p>L'oggetto promemoria contenente le attività.</p></td>
+            <td class="description last"><p>Oggetto che gestisce le attività e le operazioni su di esse.</p></td>
         </tr>
 
     
@@ -1547,7 +1532,7 @@ Le modifiche vengono salvate nel file delle attività.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="source.js.html">source.js</a>, <a href="source.js.html#line561">line 561</a>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line568">line 568</a>
     </li></ul></dd>
     
 
@@ -1696,7 +1681,7 @@ Successivamente, le notifiche vengono stampate a schermo in ordine di priorità.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="source.js.html">source.js</a>, <a href="source.js.html#line918">line 918</a>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line917">line 917</a>
     </li></ul></dd>
     
 
@@ -1836,7 +1821,7 @@ Quindi viene creato e restituito un nuovo oggetto Data JavaScript utilizzando i 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="source.js.html">source.js</a>, <a href="source.js.html#line897">line 897</a>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line896">line 896</a>
     </li></ul></dd>
     
 
@@ -2000,7 +1985,7 @@ Se il file &quot;src/promemoria.json&quot; esiste già, verrà sovrascritto con 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="source.js.html">source.js</a>, <a href="source.js.html#line262">line 262</a>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line265">line 265</a>
     </li></ul></dd>
     
 
@@ -2187,7 +2172,7 @@ Restituisce null se non è stata trovata alcuna attività nei risultati o se l'i
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="source.js.html">source.js</a>, <a href="source.js.html#line418">line 418</a>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line421">line 421</a>
     </li></ul></dd>
     
 
@@ -2301,7 +2286,7 @@ Il messaggio di avviso è formattato per rendere il tutto più pulito.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="source.js.html">source.js</a>, <a href="source.js.html#line250">line 250</a>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line253">line 253</a>
     </li></ul></dd>
     
 
@@ -2439,7 +2424,7 @@ Una volta eseguita la ricerca, i risultati vengono visualizzati utilizzando cons
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="source.js.html">source.js</a>, <a href="source.js.html#line864">line 864</a>
+        <a href="source.js.html">source.js</a>, <a href="source.js.html#line863">line 863</a>
     </li></ul></dd>
     
 
@@ -2491,7 +2476,7 @@ Una volta eseguita la ricerca, i risultati vengono visualizzati utilizzando cons
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Fri May 24 2024 19:05:26 GMT+0200 (Ora legale dell’Europa centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Sun May 26 2024 18:30:02 GMT+0200 (Ora legale dell’Europa centrale)
 </footer>
 
 <script> prettyPrint(); </script>

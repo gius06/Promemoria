@@ -98,7 +98,7 @@ class Promemoria {
         ]);
     }
     /**
-    * @description - Questa funzione controlla se l'attività specificata è già presente nella categoria fornita.
+    * @description Questa funzione controlla se l'attività specificata è già presente nella categoria fornita.
     * Se l'attività non è già presente, viene aggiunta alla categoria specificata nella rubrica.
     * Aggiunge un'attività alla categoria specificata nella rubrica.
     * Controlla se l'attività è già presente nella categoria prima di aggiungerla.
@@ -122,7 +122,7 @@ class Promemoria {
         return true;
     }
     /**
-    * @description - Elimina un'attività dalla rubrica.
+    * @description Elimina un'attività dalla rubrica.
     * Questa funzione ricerca l'attività specificata all'interno delle categorie della rubrica.
     * Se l'attività viene trovata, viene rimossa dalla categoria corrispondente.
     * Se la categoria da cui viene rimossa l'attività diventa vuota e non è una categoria predefinita ("Lavoro", "Personale", "Hobby"),
@@ -145,7 +145,7 @@ class Promemoria {
         }
     }
     /**
-     * Cerca le attività contenenti le parole chiave specificate.
+     * @description Cerca le attività contenenti le parole chiave specificate.
      * @param {string} paroleChiave - Le parole chiave da cercare nelle attività.
      * @returns {Map&lt;string, Attività[]>} - Mappa delle categorie con le attività corrispondenti alle parole chiave.
      */
@@ -179,36 +179,39 @@ class Promemoria {
         return risultatiMappa;
     }
     /**
-     * @description - Modifica il nome e/o la data di un'attività esistente.
+     * @description Modifica un'attività esistente cambiando il suo nome e la sua data.
      * @param {string} vecchiaNomeAttività - Il nome dell'attività da modificare.
-     * @param {string} [nuovoNomeAttività] - Il nuovo nome per l'attività.
-     * @param {string} [nuovaDataAttività] - La nuova data per l'attività.
-     * @returns {boolean} - True se l'attività è stata modificata con successo, altrimenti false.
+     * @param {string} nuovoNomeAttività - Il nuovo nome per l'attività.
+     * @param {string} nuovaDataAttività - La nuova data per l'attività.
+     * @returns {Object|boolean} - Restituisce l'attività duplicata se esiste, altrimenti true se la modifica è avvenuta con successo, false se l'attività non è stata trovata.
      */
     modificaAttività(vecchiaNomeAttività, nuovoNomeAttività, nuovaDataAttività) {
-        // Itera attraverso le categorie per trovare l'attività da modificare
+        let duplicatoNome = null;
+        // Controllo duplicato per il nuovo nome e la nuova data
+        this.mappa.forEach((attivitàList) => {
+            attivitàList.forEach((a) => {
+                if (a.nomeAttività === nuovoNomeAttività &amp;&amp; a.dataAttività === nuovaDataAttività) 
+                    duplicatoNome = a; // Trovato un duplicato
+            });
+        });
+        // Se c'è un duplicato, restituire l'attività duplicata
+        if (duplicatoNome) return duplicatoNome;
+        // Itera su tutte le categorie e le rispettive liste di attività
         for (const [categoria, attivitàList] of this.mappa.entries()) {
+            // Trova l'indice dell'attività da modificare
             const indice = attivitàList.findIndex(a => a.nomeAttività === vecchiaNomeAttività);
             if (indice !== -1) {
-                 // Se l'attività viene trovata, controlla se ci sono modifiche da fare
-                if (nuovoNomeAttività) {
-                    // Se è fornito un nuovo nome, lo assegna all'attività corrispondente
-                    attivitàList[indice].nomeAttività = nuovoNomeAttività;
-                }
-                if (nuovaDataAttività) {
-                    // Se è fornita una nuova data, la assegna all'attività corrispondente
-                    attivitàList[indice].dataAttività = nuovaDataAttività;
-                }
-                // Restituisce true per indicare che l'attività è stata modificata con successo
-                return true;
+                let attività = attivitàList[indice];
+                // Modifica dell'attività
+                attività.nomeAttività = nuovoNomeAttività;
+                attività.dataAttività = nuovaDataAttività;
+                return true; // Modifica avvenuta con successo
             }
         }
-        // Se l'attività non viene trovata, restituisce false
-        return false;
+        return false; // Attività non trovata
     }
-
     /**
-     * @description - Marca un'attività come completata.
+     * @description Marca un'attività come completata.
      * @param {string} nomeAttività - Il nome dell'attività da marcare.
      * @returns {boolean} - True se l'attività è stata marcata, altrimenti false.
      */
@@ -227,7 +230,7 @@ class Promemoria {
         return false;
     }
     /**
-     * @description - Questa funzione permette quando viene richiamata di visualizzare tutto l'elenco delle attività
+     * @description Questa funzione permette quando viene richiamata di visualizzare tutto l'elenco delle attività
      * con le corrispettive categorie, fa questo passando semplicemente la mappa alla funzione stampaMappa().
      * Questa funzione è utile quando noi vogliamo stampare tutto il contenuto della mappa dell'oggetto Promemoria. 
      */
@@ -236,7 +239,7 @@ class Promemoria {
         this.stampaMappa(this.mappa);
     }
      /**
-     * @description - Stampa una mappa di attività, a differenza di visualizzaTutte() ci permette nel caso in cui facciamo una ricerca e abbiamo una mappa come risultato,
+     * @description Stampa una mappa di attività, a differenza di visualizzaTutte() ci permette nel caso in cui facciamo una ricerca e abbiamo una mappa come risultato,
      * di stampare solo quella, indicando categoria, nome, data e stato di completamento.
      * @param {Map&lt;string, Attività[]>} mappa - La mappa delle attività da stampare.
      */
@@ -578,18 +581,22 @@ function cancellaAttività(promemoria) {
         }
     } 
 }
-
 /**
- * @description Questa funzione permette di modificare il nome di un'attività specifica cercata dall'utente. 
- * L'utente può cercare un'attività, confermare la modifica e inserire un nuovo nome per l'attività. 
- * Le modifiche vengono salvate nel file delle attività.
- * @param {Array} vet - Array di oggetti attività.
- * @param {Promemoria} promemoria - L'oggetto promemoria contenente le attività.
+ * @description Questo metodo consente di modificare il nome e/o la data di un'attività esistente all'interno del promemoria.
+ * L'utente può scegliere di modificare solo il nome, solo la data, entrambi o annullare l'operazione.
+ * Il processo di modifica è suddiviso in diverse fasi:
+ * 1. Visualizzazione di tutte le attività presenti.
+ * 2. Richiesta del nome dell'attività da modificare.
+ * 3. Ricerca dell'attività inserita.
+ * 4. Selezione dell'attività corretta se ci sono più risultati.
+ * 5. Richiesta dell'operazione di modifica (nome, data o entrambi).
+ * 6. Modifica dell'attività.
+ * @param {Object} promemoria - Oggetto che gestisce le attività e le operazioni su di esse.
  */
 function modificaAttività(promemoria) {
     // Inizializza la variabile per l'attività da modificare.
     let attivitàDaModificare;
-    // Pulisce la console.
+    // Pulisce la console per una visualizzazione chiara.
     console.clear();
     // Visualizza il titolo dell'operazione.
     console.log("              ╔═════════════════════════════════════════════════════╗");
@@ -605,7 +612,7 @@ function modificaAttività(promemoria) {
     // Richiede all'utente di inserire il nome dell'attività da modificare.
     let attività = prompt("              ATTIVITÀ > ");
     // Formatta il nome dell'attività inserito dall'utente.
-    attività=attività.charAt(0).toUpperCase() + attività.slice(1).toLowerCase();
+    attività = attività.charAt(0).toUpperCase() + attività.slice(1).toLowerCase();
     // Ricerca le attività corrispondenti al nome inserito.
     let risultati = promemoria.ricercaAttività(attività);
     // Verifica se ci sono risultati della ricerca.
@@ -614,7 +621,7 @@ function modificaAttività(promemoria) {
         // Seleziona l'attività da modificare dai risultati della ricerca.
         attivitàDaModificare = selezionaAttivitàNeiRisultati(promemoria, risultati, attività);
         // Verifica se l'attività selezionata è valida.
-        if(attivitàDaModificare!==null){
+        if (attivitàDaModificare !== null) {
             do {
                 // Visualizza le opzioni di modifica.
                 console.log("                            ┌───────────────────────────┐");
@@ -627,8 +634,11 @@ function modificaAttività(promemoria) {
                 // Richiede all'utente di selezionare un'opzione.
                 conferma = parseInt(prompt("                             > "));
                 console.log();
-                // Inizializza la variabile per il nome dell'attività.
-                let nomeAttività=attivitàDaModificare.nomeAttività;
+                // Inizializza la variabile per il nome e la data dell'attività.
+                let nomeAttività = attivitàDaModificare.nomeAttività;
+                let dataAttività = attivitàDaModificare.dataAttività;
+                let nuovoNomeAttività = null;
+                let nuovaDataAttività = null;
                 switch (conferma) {
                     case 3:
                     case 1: {
@@ -638,77 +648,66 @@ function modificaAttività(promemoria) {
                         console.log("                                ═══════════════════════");
                         do {
                             // Richiede all'utente di inserire il nuovo nome.
-                            nomeAttività = prompt("                                > ");
+                            nuovoNomeAttività = prompt("                                > ");
                             // Formatta il nuovo nome dell'attività.
-                            nomeAttività = nomeAttività.charAt(0).toUpperCase() + nomeAttività.slice(1).toLowerCase();
+                            nuovoNomeAttività = nuovoNomeAttività.charAt(0).toUpperCase() + nuovoNomeAttività.slice(1).toLowerCase();
                             // Verifica se il nome inserito è valido.
-                            if (nomeAttività.length === 0) 
+                            if (nuovoNomeAttività.length === 0) 
                                 testoValoreNonValido();
-                        } while (nomeAttività.length === 0);
-                        // Modifica il nome dell'attività nel promemoria.
-                        promemoria.modificaAttività(attivitàDaModificare.nomeAttività, nomeAttività, null);
-                        // Visualizza un messaggio di conferma.
-                        console.log("\n                     ═══════════════════════════════════════════");
-                        console.log("                     NOME DELL'ATTIVITÀ MODIFICATO CON SUCCESSO!");
-                        console.log("                     ═══════════════════════════════════════════\n");
-                        // Interrompe il ciclo se l'utente ha scelto di modificare solo il nome.
-                        if(conferma!==3)break;
-                    }
-                    case 2: {
-                        // Inizializza la variabile per la nuova data dell'attività.
-                        let dataAttività;
-                        let contatore = 0;
-                        do{
-                            // Richiede all'utente di inserire la nuova data.
-                            contatore = 0;
-                            console.log("                           ════════════════════════════════");
-                            console.log("                           INSERISCI LA NUOVA DATA (D/M/YY)");
-                            console.log("                           ════════════════════════════════\n");
-                            dataAttività = formattaData();
-                            // Conta quante attività hanno lo stesso nome e la stessa data.
-                            promemoria.mappa.forEach(attivitàList => {
-                                attivitàList.forEach(att => {
-                                    if (att.nomeAttività===nomeAttività&amp;&amp;att.dataAttività === dataAttività) 
-                                        contatore++;
-                                });
-                            });
-                            // Verifica se ci sono attività con lo stesso nome e la stessa data.
-                            if(contatore>0)
-                            {
-                                console.clear();
-                                console.log("\n ══════════════════════════════════════════════════════════════════════════════════");
-                                console.log(" !!!ATTENZIONE, DUE ATTIVITÀ CON LO STESSO NOME NON POSSONO AVERE LA STESSA DATA!!!");
-                                console.log(" ══════════════════════════════════════════════════════════════════════════════════\n");
-                                // Visualizza il promemoria con le attività duplicate.
-                                promemoria.stampaMappa(risultati);
+                        } while (nuovoNomeAttività.length === 0);
+                        // Se solo il nome deve essere modificato.
+                        if (conferma !== 3) {
+                            let risultatoModifica = promemoria.modificaAttività(nomeAttività, nuovoNomeAttività, dataAttività);
+                            if (risultatoModifica === true) {
+                                console.log("\n                     ═══════════════════════════════════════════");
+                                console.log("                     NOME DELL'ATTIVITÀ MODIFICATO CON SUCCESSO!");
+                                console.log("                     ═══════════════════════════════════════════\n");
+                            } else {
+                                console.log("\n  ════════════════════════════════════════════════════════════════════════════════════");
+                                console.log("  !!!ERRORE: DUE ATTIVITÀ NON POSSONO AVERE SIA LO STESSO NOME E SIA LA STESSA DATA!!!");
+                                console.log("  ════════════════════════════════════════════════════════════════════════════════════\n");
                             }
-                        }while(contatore>0);
-                        // Modifica la data dell'attività nel promemoria.
-                        promemoria.modificaAttività(attivitàDaModificare.nomeAttività, null, dataAttività);
-                        // Visualizza un messaggio di conferma.
-                        console.log("\n                      ═══════════════════════════════════════════");
-                        console.log("                      DATA DELL'ATTIVITÀ MODIFICATA CON SUCCESSO!");
-                        console.log("                      ═══════════════════════════════════════════\n");
+                            break;
+                        } else console.log();
+                    }
+                    // Se solo la data deve essere modificata o sia il nome che la data.
+                    case 2: {
+                        console.log("                           ════════════════════════════════");
+                        console.log("                           INSERISCI LA NUOVA DATA (D/M/YY)");
+                        console.log("                           ════════════════════════════════\n");
+                        do {
+                            nuovaDataAttività = formattaData();
+                            if (nuovaDataAttività.length === 0) 
+                                testoValoreNonValido();
+                        } while (nuovaDataAttività.length === 0);
+                        let risultatoModifica = promemoria.modificaAttività(nomeAttività, conferma === 3 ? nuovoNomeAttività : nomeAttività, nuovaDataAttività);
+                        if (risultatoModifica === true) {
+                            console.log("\n                      ═══════════════════════════════════════════");
+                            console.log("                      DATA DELL'ATTIVITÀ MODIFICATA CON SUCCESSO!");
+                            console.log("                      ═══════════════════════════════════════════\n");
+                        } else {
+                            console.log("\n  ════════════════════════════════════════════════════════════════════════════════════");
+                            console.log("  !!!ERRORE: DUE ATTIVITÀ NON POSSONO AVERE SIA LO STESSO NOME E SIA LA STESSA DATA!!!");
+                            console.log("  ════════════════════════════════════════════════════════════════════════════════════\n");
+                        }
                         break;
                     }
+                    // Se l'utente desidera tornare indietro e annullare la modifica.
                     case 4: {
-                        // Visualizza un messaggio di annullamento.
                         console.log("\n                                  ═══════════════════");
                         console.log("                                  MODIFICA ANNULLATA!");
                         console.log("                                  ═══════════════════\n");
                         break;
                     }
+                    // Se l'utente inserisce una scelta non valida.
                     default: {
-                        // Visualizza un messaggio di scelta non valida.
                         console.log("\n                                ═══════════════════════");
                         console.log("                                !!!SCELTA NON VALIDA!!!");
                         console.log("                                ═══════════════════════\n");
                         break;
                     }
                 }
-                // Richiede all'utente di premere Invio per continuare.
                 prompt("                            PREMERE INVIO PER CONTINUARE ...")
-                // Pulisce la console.
                 console.clear();
             } while (conferma !== 1 &amp;&amp; conferma !== 2 &amp;&amp; conferma !== 3 &amp;&amp; conferma !== 4);
         }
@@ -1163,7 +1162,7 @@ main();</code></pre>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Fri May 24 2024 19:05:26 GMT+0200 (Ora legale dell’Europa centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Sun May 26 2024 18:30:02 GMT+0200 (Ora legale dell’Europa centrale)
 </footer>
 
 <script> prettyPrint(); </script>
